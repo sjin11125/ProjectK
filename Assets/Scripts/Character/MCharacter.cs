@@ -6,15 +6,19 @@ public class MCharacter : MonoBehaviour
 {
     // Start is called before the first frame update
     float Speed = 5;
+    public float Hp;        //체력
+    public float Mp;
 
     public State MState;
     Animator MAnimator;
 
     public GameObject Target;
+    public GameObject AttackPrefab;
+    public GameObject AttackPos;
 
     public float Distance=10;
 
-    public bool isAuto=true;     //자동 이동인지
+    public bool isAuto;     //자동 이동인지
     void Start()
     {
         MAnimator = GetComponent<Animator>();
@@ -33,7 +37,7 @@ public class MCharacter : MonoBehaviour
                 MAnimator.SetBool("isAttack", false);
 
 
-                MoveCharacter();
+                MoveCharacter();        //캐릭터 이동 함수
 
                 break;
             case State.Attack:
@@ -56,7 +60,6 @@ public class MCharacter : MonoBehaviour
 
 
                     transform.position = Vector3.MoveTowards(transform.position, Target.transform.position, Speed * Time.deltaTime);
-                    Debug.Log("Target Check" + (Target.transform.position - transform.position).magnitude);
                 
              
             }
@@ -77,8 +80,10 @@ public class MCharacter : MonoBehaviour
 
     }
 
-    public void Attack()
+    public void Attack()        //공격 애니메이션에서 사용될 이벤트 함수
     {
-        MState = State.Attack;
+        GameObject AttackObj = Instantiate(AttackPrefab) as GameObject;         //공격 프리팹 생성
+        AttackObj.transform.position = AttackPos.transform.position ;
+
     }
 }

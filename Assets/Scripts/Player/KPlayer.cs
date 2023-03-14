@@ -11,7 +11,7 @@ public class KPlayer : MCharacter
 
  
 
-    public Dictionary<string, SkillInfo> MySkills = new Dictionary<string, SkillInfo>();            //현재 플레이어가 가지고 있는 스킬들
+    public Dictionary<string, SkillBase> MySkills = new Dictionary<string, SkillBase>();            //현재 플레이어가 가지고 있는 스킬들
     public override void Update()
     {
         base.Update();

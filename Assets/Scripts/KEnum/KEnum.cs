@@ -14,6 +14,7 @@ public enum State
 
 public enum Skill
 {
+    Basic,      //기본 공격
     Top,        //팽이
     Shield,         //방어막
     FireBottle,     //화염병
