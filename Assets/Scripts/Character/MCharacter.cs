@@ -6,28 +6,35 @@ public class MCharacter : MonoBehaviour
 {
     // Start is called before the first frame update
     float Speed = 10;
+
+    public State MState;
+    Animator MAnimator;
     void Start()
     {
-        
+        MAnimator = GetComponent<Animator>();
     }
-  public void MoveCharacter(MoveDir dir)
+    private void Update()
     {
-        switch (dir)
+        switch (MState)
         {
-            case MoveDir.Right:
-                transform.Translate(Vector3.right* Speed * Time.deltaTime,Space.World);
+            case State.Idle:
+                MAnimator.SetBool("isRun", false);
                 break;
-            case MoveDir.Left:
-                transform.Translate(Vector3.left * Speed * Time.deltaTime, Space.World);
+            case State.Move:
+                MAnimator.SetBool("isRun",true);
                 break;
-            case MoveDir.Up:
-                transform.Translate(Vector3.forward * Speed * Time.deltaTime, Space.World);
+            case State.Attack:
                 break;
-            case MoveDir.Down:
-                transform.Translate(Vector3.back * Speed * Time.deltaTime, Space.World);
+            case State.Skill:
                 break;
             default:
                 break;
         }
+    }
+    public void MoveCharacter()
+    {
+        transform.Translate(Vector3.forward * Speed * Time.deltaTime);
+        MState = State.Move;
+
     }
 }

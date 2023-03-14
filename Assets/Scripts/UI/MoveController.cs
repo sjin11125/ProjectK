@@ -27,6 +27,7 @@ public class MoveController : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndD
        // transform.localPosition = new Vector3(0,0,0);  //드래그 끝나면 원위치
         rect.anchoredPosition=new Vector3(0,0,0);
         isMove = false;
+        character.MState = State.Idle;
     }
 
 
@@ -39,26 +40,20 @@ public class MoveController : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndD
     {
         if (isMove)
         {
+            var JoystickDir = (FirstPos - Input.mousePosition).normalized;
             if (Mathf.Abs( (FirstPos - Input.mousePosition).magnitude)<100)
             {
 
                 transform.position = Input.mousePosition;        //드래그 중 일땐 마우스 위치 따라가기
-            }
-
-            if (FirstPos.x - transform.position.x < 0)      //오른쪽으로 이동
-            {
-                Debug.Log("오른쪽으로 이동");
-                character.MoveCharacter(MoveDir.Right);
+               
             }
             else
-                character.MoveCharacter(MoveDir.Left);
-
-            if (FirstPos.y - transform.position.y < 0)
             {
-                character.MoveCharacter(MoveDir.Up);
+                transform.position = FirstPos + JoystickDir * -100;
             }
-            else
-                character.MoveCharacter(MoveDir.Down);
+            character.gameObject.transform.eulerAngles = new Vector3(0,Mathf.Atan2(-JoystickDir.x, -JoystickDir.y)*Mathf.Rad2Deg,0);
+            character.MoveCharacter();
+
         }
     }
 

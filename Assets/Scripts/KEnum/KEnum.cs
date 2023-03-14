@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-  public enum MoveDir
-    {
-        Right,
-        Left,
-        Up,
-        Down
-    }
+public enum State
+{
+    Idle,
+    Move,
+    Attack,
+    Skill
+
+}
 
