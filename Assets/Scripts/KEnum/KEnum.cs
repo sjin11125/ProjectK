@@ -12,3 +12,11 @@ public enum State
 
 }
 
+public enum Skill
+{
+    Top,        //팽이
+    Shield,         //방어막
+    FireBottle,     //화염병
+    Thunder,        //번개 발사기
+}
+

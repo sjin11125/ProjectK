@@ -5,16 +5,24 @@ using UnityEngine;
 public class MCharacter : MonoBehaviour
 {
     // Start is called before the first frame update
-    float Speed = 10;
+    float Speed = 5;
 
     public State MState;
     Animator MAnimator;
+
+    public GameObject Target;
+
+    public float Distance=10;
+
+    public bool isAuto=true;     //자동 이동인지
     void Start()
     {
         MAnimator = GetComponent<Animator>();
+        isAuto = true;
     }
-    private void Update()
+    public virtual void Update()
     {
+
         switch (MState)
         {
             case State.Idle:
@@ -22,8 +30,14 @@ public class MCharacter : MonoBehaviour
                 break;
             case State.Move:
                 MAnimator.SetBool("isRun",true);
+                MAnimator.SetBool("isAttack", false);
+
+
+                MoveCharacter();
+
                 break;
             case State.Attack:
+                MAnimator.SetBool("isAttack",true);
                 break;
             case State.Skill:
                 break;
@@ -33,8 +47,38 @@ public class MCharacter : MonoBehaviour
     }
     public void MoveCharacter()
     {
-        transform.Translate(Vector3.forward * Speed * Time.deltaTime);
-        MState = State.Move;
+        if (Target!=null)
+        {
+            if ((Target.transform.position - transform.position).magnitude > Distance)
+            {
+              
+                    transform.LookAt(Target.transform);
 
+
+                    transform.position = Vector3.MoveTowards(transform.position, Target.transform.position, Speed * Time.deltaTime);
+                    Debug.Log("Target Check" + (Target.transform.position - transform.position).magnitude);
+                
+             
+            }
+            else
+            {
+                  transform.LookAt(Target.transform);
+
+                MState = State.Attack;      //공격 상태로 전환
+            }
+        }
+        else
+        {
+            transform.Translate(Vector3.forward * Speed * Time.deltaTime);
+            MState = State.Move;
+        }
+  
+    
+
+    }
+
+    public void Attack()
+    {
+        MState = State.Attack;
     }
 }
