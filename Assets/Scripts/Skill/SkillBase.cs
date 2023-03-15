@@ -20,10 +20,6 @@ public class SkillBase : MonoBehaviour
     {
         switch (SkillName)
         {
-            case Skill.Basic:
-
-                StartCoroutine(BasicCorountine());
-                break;
             case Skill.Top:
 
                 StartCoroutine(TopCorountine());
@@ -35,6 +31,8 @@ public class SkillBase : MonoBehaviour
             case Skill.Thunder:
                 break;
             default:
+
+                StartCoroutine(BasicCorountine());
                 break;
         }
     }

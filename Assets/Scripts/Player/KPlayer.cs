@@ -15,10 +15,7 @@ public class KPlayer : MCharacter
 
     public float Exp;
 
-     void Start()
-    {
-          
-    }
+ 
     public override void Update()
     {
         base.Update();

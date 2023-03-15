@@ -14,7 +14,6 @@ public enum State
 
 public enum Skill
 {
-    Basic,      //±âº» °ø°İ
     Top,        //ÆØÀÌ
     Shield,         //¹æ¾î¸·
     Bomb,     //ÆøÅº

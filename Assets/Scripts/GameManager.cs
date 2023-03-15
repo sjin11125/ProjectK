@@ -12,10 +12,8 @@ public class GameManager : Singleton<GameManager>
     
     public UnityEvent LevelUp;          //레벨업 이벤트 변수
 
-    public Dictionary<string, SkillInfo> AllSkills = new Dictionary<string, SkillInfo>();        //모든 기술 정보
     private void Start()
     {
-        LevelUp.AddListener(SkillLevelUp);
     }
 
     public void SkillLevelUp()
