@@ -12,6 +12,13 @@ public class KPlayer : MCharacter
  
 
     public Dictionary<string, SkillBase> MySkills = new Dictionary<string, SkillBase>();            //현재 플레이어가 가지고 있는 스킬들
+
+    public float Exp;
+
+     void Start()
+    {
+          
+    }
     public override void Update()
     {
         base.Update();
@@ -43,6 +50,16 @@ public class KPlayer : MCharacter
                 }
                 
             }
+        }
+    }
+
+    public void Reward(float Exp)            //몬스터 죽이고 보상받기
+    {
+        this.Exp += Exp;
+        if (this.Exp>=100)
+        {
+            this.Exp = 0;
+            GameManager.Instance.SkillLevelUp();
         }
     }
 }

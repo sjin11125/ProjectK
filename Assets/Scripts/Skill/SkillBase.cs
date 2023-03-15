@@ -10,6 +10,9 @@ public class SkillBase : MonoBehaviour
     float Damage;
     int level;
     int Radius = 1;
+    int coolTime = 5;
+    int count = 1;      //°¹¼ö
+    int range = 5;      //¹üÀ§
 
    public GameObject Player;
     // Start is called before the first frame update
@@ -27,7 +30,7 @@ public class SkillBase : MonoBehaviour
                 break;
             case Skill.Shield:
                 break;
-            case Skill.FireBottle:
+            case Skill.Bomb:
                 break;
             case Skill.Thunder:
                 break;
@@ -57,6 +60,15 @@ public class SkillBase : MonoBehaviour
 
                 dir++;
             yield return null;
+        }
+    }
+    IEnumerator BombCorountine()       //ÆøÅº °ø°Ý
+    {
+        while (true)
+        {
+            //  transform.position = Player.transform.position +
+          
+            yield return new WaitForSeconds(coolTime);
         }
     }
     private void Start()
