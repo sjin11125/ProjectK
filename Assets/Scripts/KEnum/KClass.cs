@@ -16,7 +16,9 @@ public class SkillInfo
     public int[] CoolTime;
     public int[] Count ;      //°¹¼ö
 
-    public SkillInfo(string name, string info, int[] speed, int[] damage,  int[] radius, int[] coolTime, int[] count)
+    public string EngName;
+
+    public SkillInfo(string name, string info, int[] speed, int[] damage,  int[] radius, int[] coolTime, int[] count,string engName)
     {
         Name = name;
         Info = info;
@@ -25,6 +27,7 @@ public class SkillInfo
         Radius = radius;
         CoolTime = coolTime;
        Count = count;
+        EngName = engName;
     }
     // public int range ;      //¹üÀ§
 

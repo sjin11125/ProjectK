@@ -4,17 +4,31 @@ using UnityEngine;
 
 public class SkillBase : MonoBehaviour
 {
-    string Name;
-   public Skill SkillName;
-    float Speed=3;
-    float Damage;
-    int level;
-    int Radius = 1;
-    int coolTime = 5;
-    int count = 1;      //°¹¼ö
-    int range = 5;      //¹üÀ§
+    public Skill SkillName;
 
-   public GameObject Player;
+    public string Name;
+    public float Speed;
+    public float Damage;
+    public int level;
+    public int Radius ;
+    public int coolTime;
+    public int count ;      //°¹¼ö
+
+    public SkillBase(SkillInfo skillInfo)
+    {
+        Name = skillInfo.Name;
+        Speed = skillInfo.Speed[0];
+        Damage = skillInfo.Damage[0];
+        this.level = 0;
+        Radius = skillInfo.Radius[0];
+        this.coolTime = skillInfo.CoolTime[0];
+        this.count = skillInfo.Count[0];
+    }
+
+
+
+    //public SkillInfo skillInfo;
+
     // Start is called before the first frame update
     private void Update()
     {
@@ -71,7 +85,7 @@ public class SkillBase : MonoBehaviour
     }
     private void Start()
     {
-        Player = GameObject.Find("Player");
+      //  Player = GameObject.Find("Player");
 
     }
 
