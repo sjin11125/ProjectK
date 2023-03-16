@@ -14,6 +14,8 @@ public class SkillManager : MonoBehaviour
     public Dictionary<string, SkillInfo> AllSkills = new Dictionary<string, SkillInfo>();        //모든 기술 정보
     public Dictionary<string, SkillBase> MySkills = new Dictionary<string, SkillBase>();            //현재 플레이어가 가지고 있는 스킬들
 
+    [SerializeField]
+    List<GameObject> SkillPrefab;
     public KPlayer Player;
     // Start is called before the first frame update
     private void Start()
@@ -51,13 +53,24 @@ public class SkillManager : MonoBehaviour
                         MySkills[item.skillInfo.EngName].Radius = AllSkills[item.skillInfo.EngName].Radius[MySkills[item.skillInfo.EngName].level]; //범위 업데이트
                         MySkills[item.skillInfo.EngName].coolTime = AllSkills[item.skillInfo.EngName].CoolTime[MySkills[item.skillInfo.EngName].level]; //쿨타임 업데이트
                         MySkills[item.skillInfo.EngName].count = AllSkills[item.skillInfo.EngName].Count[MySkills[item.skillInfo.EngName].level]; //개수 업데이트
+                   
                     }
                 }
-                else
+                else                //해당 스킬이 없으면
                 {
-                    MySkills.Add(item.skillInfo.EngName,new SkillBase(item.skillInfo));         //새로운 스킬 추가
+                    GameObject skill = SkillPrefab.Find(x => x.GetComponent<SkillBase>().SkillName.ToString() == item.skillInfo.EngName);
+
+                    GameObject skillPrefab = Instantiate(skill, Player.Skillpos.transform) as GameObject;
+                   // skillPrefab.transform.localPosition
+
+                    SkillBase skillObjSkillBase=skillPrefab.GetComponent<SkillBase>();
+                    skillObjSkillBase.SetSkillInfo( item.skillInfo);            //스킬 정보 세팅
+
+                    MySkills.Add(item.skillInfo.EngName, skillObjSkillBase);         //새로운 스킬 추가
 
                 }
+
+                Player.SkillUpdate(MySkills[item.skillInfo.EngName]);           //스킬 업데이트
 
             });
         }

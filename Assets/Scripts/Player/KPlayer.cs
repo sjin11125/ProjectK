@@ -9,13 +9,10 @@ public class KPlayer : MCharacter
     [SerializeField]
     List<MonsterSpawner> MonsterSpawn;
 
- 
-
-    
-
     public float Exp;
 
- 
+    public GameObject Skillpos;
+
     public override void Update()
     {
         base.Update();
@@ -58,5 +55,10 @@ public class KPlayer : MCharacter
             this.Exp = 0;
             GameManager.Instance.SkillLevelUp();
         }
+    }
+
+    public void SkillUpdate(SkillBase skill)       //스킬 업데이트
+    {
+      
     }
 }

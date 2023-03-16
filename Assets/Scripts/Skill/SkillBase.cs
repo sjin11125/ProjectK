@@ -26,7 +26,16 @@ public class SkillBase : MonoBehaviour
     }
 
 
-
+    public void SetSkillInfo(SkillInfo skillInfo)
+    {
+        Name = skillInfo.Name;
+        Speed = skillInfo.Speed[0];
+        Damage = skillInfo.Damage[0];
+        this.level = 0;
+        Radius = skillInfo.Radius[0];
+        this.coolTime = skillInfo.CoolTime[0];
+        this.count = skillInfo.Count[0];
+    }
     //public SkillInfo skillInfo;
 
     // Start is called before the first frame update
