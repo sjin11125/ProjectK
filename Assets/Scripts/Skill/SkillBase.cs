@@ -10,10 +10,11 @@ public class SkillBase : MonoBehaviour
     public float Speed;
     public float Damage;
     public int level;
-    public int Radius ;
+    public float Radius ;
     public int coolTime;
     public int count ;      //°¹¼ö
 
+    public GameObject[] Prefabs;
     public SkillBase(SkillInfo skillInfo)
     {
         Name = skillInfo.Name;
@@ -55,7 +56,7 @@ public class SkillBase : MonoBehaviour
                 break;
             default:
 
-                StartCoroutine(BasicCorountine());
+               // StartCoroutine(BasicCorountine());
                 break;
         }
     }
@@ -74,14 +75,22 @@ public class SkillBase : MonoBehaviour
         int dir = 0;
         while (true)
         {
-            //  transform.position = Player.transform.position +
-            var x = Radius * Mathf.Cos(dir * Mathf.Deg2Rad);
-            var z = Radius * Mathf.Sin(dir * Mathf.Deg2Rad);
-            transform.localPosition = new Vector3(x, transform.localPosition.y, z);
+            for (int i = 0; i < count; i++)
+            {
+                Prefabs[i].SetActive(true);
+                int deg = dir + (i * (360 / count));            //°¹¼ö¿¡ ¸Â°Ô °¢µµ Á¶Àý
+                //int speed = Radius / (i+1);
+                var x = Radius * Mathf.Cos(deg * Mathf.Deg2Rad);         //x ±¸ÇÏ±â
+                var z = Radius* Mathf.Sin(deg * Mathf.Deg2Rad);        //y ±¸ÇÏ±â
+                Prefabs[i].transform.localPosition = new Vector3((float)x, transform.localPosition.y, (float)z);
 
                 dir++;
+
+            }
+        
             yield return null;
         }
+
     }
     IEnumerator BombCorountine()       //ÆøÅº °ø°Ý
     {

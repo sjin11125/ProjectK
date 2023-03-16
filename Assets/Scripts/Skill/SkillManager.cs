@@ -29,11 +29,11 @@ public class SkillManager : MonoBehaviour
                 break;
             string[] skill = data[i].Split(',');            //ÄŞ¸¶ ±âÁØÀ¸·Î ÂÉ°·
        
-            int[] speed = Array.ConvertAll((skill[2].Split('.')), int.Parse);
-            int[] damage= Array.ConvertAll((skill[3].Split('.')), int.Parse);
-            int[] radius= Array.ConvertAll((skill[4].Split('.')), int.Parse);
-            int[] cooltime= Array.ConvertAll((skill[5].Split('.')), int.Parse);
-            int[] count= Array.ConvertAll((skill[6].Split('.')), int.Parse);
+            int[] speed = Array.ConvertAll((skill[2].Split('*')), int.Parse);
+            int[] damage= Array.ConvertAll((skill[3].Split('*')), int.Parse);
+            float[] radius= Array.ConvertAll((skill[4].Split('*')), float.Parse);
+            int[] cooltime= Array.ConvertAll((skill[5].Split('*')), int.Parse);
+            int[] count= Array.ConvertAll((skill[6].Split('*')), int.Parse);
 
 
             SkillInfo skillInfo = new SkillInfo(skill[0], skill[1], speed,damage,radius,cooltime,count, skill[7]);

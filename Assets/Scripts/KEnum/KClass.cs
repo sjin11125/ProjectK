@@ -12,13 +12,13 @@ public class SkillInfo
     public string Info;
     public int[] Speed ;
     public int[] Damage;
-    public int[] Radius;
+    public float[] Radius;
     public int[] CoolTime;
     public int[] Count ;      //°¹¼ö
 
     public string EngName;
 
-    public SkillInfo(string name, string info, int[] speed, int[] damage,  int[] radius, int[] coolTime, int[] count,string engName)
+    public SkillInfo(string name, string info, int[] speed, int[] damage,  float[] radius, int[] coolTime, int[] count,string engName)
     {
         Name = name;
         Info = info;

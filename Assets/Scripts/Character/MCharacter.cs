@@ -82,8 +82,8 @@ public class MCharacter : MonoBehaviour
 
     public void Attack()        //공격 애니메이션에서 사용될 이벤트 함수
     {
-        GameObject AttackObj = Instantiate(AttackPrefab) as GameObject;         //공격 프리팹 생성
-        AttackObj.transform.position = AttackPos.transform.position ;
+      //  GameObject AttackObj = Instantiate(AttackPrefab) as GameObject;         //공격 프리팹 생성
+      //  AttackObj.transform.position = AttackPos.transform.position ;
 
     }
 }
