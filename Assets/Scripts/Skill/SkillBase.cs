@@ -40,7 +40,7 @@ public class SkillBase : MonoBehaviour
     //public SkillInfo skillInfo;
 
     // Start is called before the first frame update
-    private void Update()
+    private void Start()
     {
         switch (SkillName)
         {
@@ -53,6 +53,7 @@ public class SkillBase : MonoBehaviour
             case Skill.Bomb:
                 break;
             case Skill.Thunder:
+                StartCoroutine(ThunderCorountine());
                 break;
             default:
 
@@ -79,7 +80,6 @@ public class SkillBase : MonoBehaviour
             {
                 Prefabs[i].SetActive(true);
                 int deg = dir + (i * (360 / count));            //갯수에 맞게 각도 조절
-                //int speed = Radius / (i+1);
                 var x = Radius * Mathf.Cos(deg * Mathf.Deg2Rad);         //x 구하기
                 var z = Radius* Mathf.Sin(deg * Mathf.Deg2Rad);        //y 구하기
                 Prefabs[i].transform.localPosition = new Vector3((float)x, transform.localPosition.y, (float)z);
@@ -90,7 +90,6 @@ public class SkillBase : MonoBehaviour
         
             yield return null;
         }
-
     }
     IEnumerator BombCorountine()       //폭탄 공격
     {
@@ -101,10 +100,38 @@ public class SkillBase : MonoBehaviour
             yield return new WaitForSeconds(coolTime);
         }
     }
-    private void Start()
+    IEnumerator ThunderCorountine()       //번개 공격
     {
-      //  Player = GameObject.Find("Player");
+        List<GameObject> ThunderObjPool=new List<GameObject> ();
 
+      
+            if (ThunderObjPool.Count == 0)
+            {
+                GameObject ThunderObj = Instantiate(Prefabs[0], null) as GameObject;
+
+                ThunderObjPool.Add(ThunderObj);     //오브젝트 풀에 추가
+                Vector3 pos = ThunderObj.transform.position;
+                ThunderObj.transform.position = new Vector3(pos.x+Random.Range(-10,10),pos.y,
+                                                            pos.z + Random.Range(-10, 10)); //랜덤위치 생성
+            }
+            else
+            {
+               
+                    GameObject ThunderObj = ThunderObjPool.Find(x => x.activeSelf == false);
+                if (ThunderObj==null)
+                {
+                    ThunderObj = Instantiate(Prefabs[0], null) as GameObject;
+
+                    ThunderObjPool.Add(ThunderObj);     //오브젝트 풀에 추가
+                }
+                else
+                {
+
+                }
+            }
+
+            yield return new WaitForSeconds(coolTime);
+        
     }
 
 }
