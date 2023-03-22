@@ -15,10 +15,14 @@ public class KPlayer : MCharacter
 
     public override void Update()
     {
-        base.Update();
+        if (transform.CompareTag(NetworkManager.Instance.player.ToString()))
+        {
+            base.Update();
 
 
-        TargetCheck();
+            TargetCheck();
+        }
+ 
     }
 
     public void TargetCheck()

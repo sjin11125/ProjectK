@@ -9,7 +9,7 @@ public class NetworkManager : Singleton<NetworkManager>
 {
     Socket socket;
     public ReactiveProperty<string> roomId;
-    public Player player;
+    public PlayerName player;
     void Start()
     {
       socket = Socket.Connect("http://localhost:8000");
@@ -19,14 +19,14 @@ public class NetworkManager : Singleton<NetworkManager>
         });
         socket.On("CreateRoom", (string Id) => {
             Debug.Log("룸 id: " + Id);
-            player = Player.Player1;
+            player = PlayerName.Player1;
             roomId.Value = Id;
         });
         
         socket.On("GameStart", (string id) => {
             Debug.Log(" 게임 스타트");
-            player = Player.Player2;
-            SceneManager.LoadScene("Main");
+            player = PlayerName.Player2;
+            SceneManager.LoadScene("Multi");
         });
 
     }

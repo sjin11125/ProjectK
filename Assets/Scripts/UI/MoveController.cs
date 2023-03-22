@@ -9,6 +9,8 @@ public class MoveController : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndD
     RectTransform rect;
 
    public MCharacter character;
+
+    public GameObject[] Characters;
     bool isMove;
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -37,6 +39,19 @@ public class MoveController : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndD
     void Start()
     {
         rect = GetComponent<RectTransform>();
+        switch (NetworkManager.Instance.player)
+        {
+            case PlayerName.Player1:
+                character = Characters[0].GetComponent<MCharacter>();
+                break;
+
+            case PlayerName.Player2:
+                character = Characters[1].GetComponent<MCharacter>();
+                break;
+
+            default:
+                break;
+        }
     }
     private void Update()
     {

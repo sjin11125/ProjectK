@@ -11,7 +11,7 @@ public enum State
     Skill
 
 }
-public enum Player
+public enum PlayerName
 {
     Player1,
     Player2,
