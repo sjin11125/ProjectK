@@ -2,15 +2,46 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using socket.io;
+using UniRx;
+using UnityEngine.SceneManagement;
 
-public class NetworkManager : MonoBehaviour
+public class NetworkManager : Singleton<NetworkManager>
 {
+    Socket socket;
+    public ReactiveProperty<string> roomId;
+    public Player player;
     void Start()
     {
-        var socket = Socket.Connect("http://localhost:8000");
-      /*  socket.On(SystemEvents.connect, () =>{
+      socket = Socket.Connect("http://localhost:8000");
+
+        socket.On(SystemEvents.connect, () =>{
             Debug.Log("연결 성공");
-        });*/
+        });
+        socket.On("CreateRoom", (string Id) => {
+            Debug.Log("룸 id: " + Id);
+            player = Player.Player1;
+            roomId.Value = Id;
+        });
+        
+        socket.On("GameStart", (string id) => {
+            Debug.Log(" 게임 스타트");
+            player = Player.Player2;
+            SceneManager.LoadScene("Main");
+        });
+
+    }
+
+    public void CreateRoom()
+    {
+       // string roomId;
+        socket.Emit("CreateRoom");
+ 
+    }
+    public void EnterRoom(string id)
+    {
+       // string roomId;
+        socket.Emit("EnterRoom",id);
+ 
     }
 
 }

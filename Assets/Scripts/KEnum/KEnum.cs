@@ -11,7 +11,11 @@ public enum State
     Skill
 
 }
-
+public enum Player
+{
+    Player1,
+    Player2,
+}
 public enum Skill
 {
     Top,        //ÆØÀÌ
