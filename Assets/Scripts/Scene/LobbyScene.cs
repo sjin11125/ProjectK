@@ -21,10 +21,12 @@ public class LobbyScene : MonoBehaviour
 
             NetworkManager.Instance.CreateRoom();
 
+
         });
         //방들어가기 버튼 구독
         EnterRoomBtn.OnClickAsObservable().Subscribe(_=> {
 
+            NetworkManager.Instance.roomId.Value = RoomIdInput.text;
             NetworkManager.Instance.EnterRoom(RoomIdInput.text);
 
         });

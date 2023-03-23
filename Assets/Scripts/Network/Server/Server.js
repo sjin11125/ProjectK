@@ -52,22 +52,28 @@ socket.on('EnterRoom',(id)=>{           //방 들어가기
     console.log('들어가는 방 id: '+id);
     
     socket.join(id);       //룸 드가기
-   io.to(id).emit('GameStart',id);       //룸에 있는 사람들에게 보내기 게임 스타트
+
+    var seed=randSeed();            //랜덤 시드 정하기
+
+   io.to(id).emit('GameStart',seed);       //룸에 있는 사람들에게 보내기 게임 스타트
 });
 
 socket.on('MovePlayer',(pos)=>{           //캐릭터 움직이기
     //console.log('이동하는 방향: '+JSON.stringify( pos));
 const posInfo=JSON.parse(JSON.stringify( pos));
 
-posInfo.RoomId=posInfo.RoomId.replaceAll("\"", "");
+posInfo.RoomId=posInfo.RoomId.replaceAll("\"", "");     //큰따옴표 제거
 
-console.log('방 id: '+posInfo.RoomId);
+
    io.to(posInfo.RoomId).emit('MoveOtherPlayer',posInfo);    
 });
 
 });
 
-
+function randSeed()
+{
+    return Math.floor(Math.random() * (5 - 1)) + 1;
+}
 function detectDup(id)     //룸 id 중복되는지 확인하는 함수, 중복되면 false, 중복안되면 true
 {
    rooms.forEach(element => {

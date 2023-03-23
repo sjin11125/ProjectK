@@ -10,8 +10,12 @@ public class NetworkManager : Singleton<NetworkManager>
 {
     Socket socket;
     public ReactiveProperty<string> roomId;
+
     public ReactiveProperty<bool> IsOtherCharacterMove;     //다른 캐릭터가 움직였니?!!?!!?!?!?!?!?!?
-    public ReactiveProperty<MovePosDir> OtherCharacterMove;     //다른 캐릭터가 움직였니?!!?!!?!?!?!?!?!?
+    public ReactiveProperty<MovePosDir> OtherCharacterMove; //다른 캐릭터가 움직인 위치
+
+    public ReactiveProperty<int> RandomSeed;
+
     public PlayerName player= PlayerName.None;
     
     void Start()
@@ -27,20 +31,20 @@ public class NetworkManager : Singleton<NetworkManager>
             roomId.Value = Id;
         });
         
-        socket.On("GameStart", (string id) => {
+        socket.On("GameStart", (string seed) => {
             Debug.Log(" 게임 스타트");
 
             if (player == PlayerName.None)
              player = PlayerName.Player2;
 
-            roomId.Value = id;
+            RandomSeed.Value =int.Parse(seed);
         
 
             SceneManager.LoadScene("Multi");
         });
         //socket.On
         socket.On("MoveOtherPlayer", (string pos) => {
-            Debug.Log(" 캐릭터 움직임");
+
             IsOtherCharacterMove.Value = true;
             MovePosDir movePosDir = JsonUtility.FromJson<MovePosDir>(pos);
             if (movePosDir.PlayerName!= player.ToString())      //움직이는 캐릭터가 내 캐릭터가 아니라면
