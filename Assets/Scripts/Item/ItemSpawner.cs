@@ -10,6 +10,10 @@ public class ItemSpawner : MonoBehaviour
 
     int[] XValue =new int[] { -51, 37 };
     int[] ZValue = new int[] { -53, 30 };
+    int[] CenterXValue =new int[] { -28, 20 };
+    int[] CenterZValue = new int[] { -27, 20 };
+
+
     public GameObject ItemPrefab;
     public GameObject ItemParent;
     [SerializeField]
@@ -30,7 +34,12 @@ public class ItemSpawner : MonoBehaviour
         for (int i = 0; i < 10; i++)
         {
             GameObject ItemObj = Instantiate(ItemPrefab, ItemParent.transform) as GameObject;
-            ItemObj.transform.localPosition = new Vector3(Random.Range(XValue[0], XValue[1]), 8, Random.Range(ZValue[0], ZValue[1]));
+            do
+            {
+
+                ItemObj.transform.localPosition = new Vector3(Random.Range(XValue[0], XValue[1]), 8, Random.Range(ZValue[0], ZValue[1]));
+            } while ((ItemObj.transform.localPosition.x<=20&& ItemObj.transform.localPosition.x>=-20)||
+            (ItemObj.transform.localPosition.z <= 20 && ItemObj.transform.localPosition.z >= -27));
             ItemList.Add(ItemObj);
         }
            
