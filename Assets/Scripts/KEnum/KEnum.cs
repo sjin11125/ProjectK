@@ -15,6 +15,7 @@ public enum PlayerName
 {
     Player1,
     Player2,
+    None
 }
 public enum Skill
 {

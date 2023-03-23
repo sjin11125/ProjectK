@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
     using UnityEngine.EventSystems;
+using UniRx;
 public class MoveController : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragHandler
 {
     Vector3 FirstPos;
     RectTransform rect;
 
    public MCharacter character;
+   public MCharacter Othercharacter;
 
     public GameObject[] Characters;
     bool isMove;
@@ -43,15 +45,24 @@ public class MoveController : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndD
         {
             case PlayerName.Player1:
                 character = Characters[0].GetComponent<MCharacter>();
+                Othercharacter= Characters[1].GetComponent<MCharacter>();
                 break;
 
             case PlayerName.Player2:
                 character = Characters[1].GetComponent<MCharacter>();
+                Othercharacter = Characters[0].GetComponent<MCharacter>();
+
                 break;
 
             default:
                 break;
         }
+        NetworkManager.Instance.OtherCharacterMove.Subscribe((movePosDir)=> {
+            if (NetworkManager.Instance.IsOtherCharacterMove.Value)
+            MoveOtherPlayer(movePosDir.Dir, movePosDir.Pos);
+
+
+        });
     }
     private void Update()
     {
@@ -68,11 +79,29 @@ public class MoveController : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndD
             {
                 transform.position = FirstPos + JoystickDir * -100;
             }
-            character.gameObject.transform.eulerAngles = new Vector3(0,Mathf.Atan2(-JoystickDir.x, -JoystickDir.y)*Mathf.Rad2Deg,0);
-            character.Target = null;
-            character.MState = State.Move;
+            Move(JoystickDir);      //해당 방향으로 이동
 
         }
+    }
+    public void Move(Vector3 JoystickDir)
+    {
+        character.gameObject.transform.eulerAngles = new Vector3(0, Mathf.Atan2(-JoystickDir.x, -JoystickDir.y) * Mathf.Rad2Deg, 0);
+        character.Target = null;
+        character.MState = State.Move;
+
+
+        character.transform.Translate(Vector3.forward * character.Speed * Time.deltaTime);
+
+        NetworkManager.Instance.MovePlayer(JoystickDir, character.transform.position);
+    }
+    public void MoveOtherPlayer (Vector3 JoystickDir,Vector3 Pos)
+    {
+        Debug.Log(Pos);
+        Othercharacter.gameObject.transform.eulerAngles = new Vector3(0, Mathf.Atan2(-JoystickDir.x, -JoystickDir.y) * Mathf.Rad2Deg, 0);
+        Othercharacter.Target = null;
+        Othercharacter.MState = State.Move;
+
+        Othercharacter.transform.transform.position = Pos;
     }
 
 }

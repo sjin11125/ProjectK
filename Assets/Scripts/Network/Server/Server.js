@@ -1,6 +1,6 @@
 const { randomInt, randomBytes } = require('crypto');
 const { Socket } = require('engine.io');
-const { json } = require('express/lib/response');
+const { json, type } = require('express/lib/response');
 const {crypto}=require('crypto');
 const e = require('express');
 const { Console } = require('console');
@@ -15,7 +15,10 @@ app.get('/', (req, res) => {
     res.send('Hello');
  });
 
-http.listen(8000,()=>{console.log('서버 시작~~')});
+http.listen(4444,()=>{
+    console.log('서버 시작~~');
+ 
+});
 
 io.on('connection',(socket)=>{          //클라와 연결되면
 
@@ -41,18 +44,26 @@ var id;
 
      socket.join(id);       //룸 드가기
      console.log('생성된 방 id: '+ id);
-socket.emit('CreateRoom',id);
+socket.emit('CreateRoom',id);           //쌍따옴표 없음
 });
 
 
-socket.on('EnterRoom',(id)=>{
+socket.on('EnterRoom',(id)=>{           //방 들어가기
     console.log('들어가는 방 id: '+id);
     
     socket.join(id);       //룸 드가기
    io.to(id).emit('GameStart',id);       //룸에 있는 사람들에게 보내기 게임 스타트
 });
 
+socket.on('MovePlayer',(pos)=>{           //캐릭터 움직이기
+    //console.log('이동하는 방향: '+JSON.stringify( pos));
+const posInfo=JSON.parse(JSON.stringify( pos));
 
+posInfo.RoomId=posInfo.RoomId.replaceAll("\"", "");
+
+console.log('방 id: '+posInfo.RoomId);
+   io.to(posInfo.RoomId).emit('MoveOtherPlayer',posInfo);    
+});
 
 });
 

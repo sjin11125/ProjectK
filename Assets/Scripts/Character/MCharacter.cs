@@ -5,7 +5,7 @@ using UnityEngine;
 public class MCharacter : MonoBehaviour
 {
     // Start is called before the first frame update
-    float Speed = 5;
+   public  float Speed = 5;
     public float Hp;        //체력
     public float Mp;
 
@@ -37,7 +37,7 @@ public class MCharacter : MonoBehaviour
                 MAnimator.SetBool("isAttack", false);
 
 
-                MoveCharacter();        //캐릭터 이동 함수
+             //   MoveCharacter();        //캐릭터 이동 함수
 
                 break;
             case State.Attack:

@@ -43,3 +43,11 @@ public class SkillInfoUI
     public List<Image> skillLevelImage;
 
 }
+[Serializable]
+public struct MovePosDir
+{
+    public string PlayerName;
+    public string RoomId;
+    public Vector3 Pos;
+    public Vector3 Dir;
+}

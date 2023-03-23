@@ -20,7 +20,7 @@ public class KPlayer : MCharacter
             base.Update();
 
 
-            TargetCheck();
+            //TargetCheck();
         }
  
     }
