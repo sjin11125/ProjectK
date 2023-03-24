@@ -17,6 +17,8 @@ public class SkillManager : MonoBehaviour
     [SerializeField]
     List<GameObject> SkillPrefab;
     public KPlayer Player;
+
+    public float Exp;
     // Start is called before the first frame update
     private void Start()
     {
@@ -70,7 +72,7 @@ public class SkillManager : MonoBehaviour
 
                 }
 
-                Player.SkillUpdate(MySkills[item.skillInfo.EngName]);           //스킬 업데이트
+                //Player.SkillUpdate(MySkills[item.skillInfo.EngName]);           //스킬 업데이트
 
             });
         }

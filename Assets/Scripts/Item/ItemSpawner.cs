@@ -59,6 +59,8 @@ public class ItemSpawner : MonoBehaviour
                 {
                     NetworkManager.Instance.GetItem(ItemList.IndexOf(ItemObj));     //닿은 아이템 인덱스 전송
                     ItemList[ItemList.IndexOf(ItemObj)].SetActive(false);
+
+
                 }
 
             });

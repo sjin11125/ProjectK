@@ -78,8 +78,4 @@ public class KPlayer : MCharacter
         }
     }
 
-    public void SkillUpdate(SkillBase skill)       //스킬 업데이트
-    {
-      
-    }
 }
