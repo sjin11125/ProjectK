@@ -90,7 +90,7 @@ public class NetworkManager : Singleton<NetworkManager>
 
     public void GetItem(int index)
     {
-        socket.Value.Emit("GetItem",index.ToString());
+        socket.Value.Emit("GetItem", index.ToString());
     }
 
 }

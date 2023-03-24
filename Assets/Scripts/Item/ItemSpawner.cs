@@ -22,18 +22,20 @@ public class ItemSpawner : MonoBehaviour
     void Start()
     {   //Ω√µÂ∞™¿∏∑Œ ∑£¥˝ª˝º∫
 
-        NetworkManager.Instance.RandomSeed.Subscribe((seed)=> {
+        /*NetworkManager.Instance.RandomSeed.Subscribe((seed)=> {
            
             ItemObjSetting(seed);
 
-        });
+        });*/
         ItemObjSetting(NetworkManager.Instance.RandomSeed.Value);
 
         NetworkManager.Instance.socket.Value.On("GetItem", (string index) => {
 
-            Debug.Log("æ∆¿Ã≈€ »πµÊ");
-
-            ItemList[int.Parse( index)].SetActive(false);
+//Debug.Log("æ∆¿Ã≈€ »πµÊ");
+            index = index.Replace('"',' ').Trim();
+            Debug.Log("æ∆¿Ã≈€ »πµÊ "+ index);
+            int i = int.Parse(index);
+            ItemList[i].SetActive(false);
         });
     }
     public void ItemObjSetting(int seed)
@@ -46,15 +48,19 @@ public class ItemSpawner : MonoBehaviour
             {
 
                 ItemObj.transform.localPosition = new Vector3(Random.Range(XValue[0], XValue[1]), 8, Random.Range(ZValue[0], ZValue[1]));
-            } while ((ItemObj.transform.localPosition.x<=20&& ItemObj.transform.localPosition.x>=-20)||
+            } while ((ItemObj.transform.localPosition.x <= 20 && ItemObj.transform.localPosition.x >= -20) ||
             (ItemObj.transform.localPosition.z <= 20 && ItemObj.transform.localPosition.z >= -27));
+
             ItemList.Add(ItemObj);
-            ItemObj.OnTriggerEnterAsObservable().Subscribe((other)=> {
+
+            ItemObj.OnTriggerEnterAsObservable().Subscribe((other) =>
+            {
                 if (other.CompareTag(NetworkManager.Instance.player.ToString()))            //¿Ø¿˙∞° æ∆¿Ã≈€ø° ¥Í¿∏∏È
                 {
-                    NetworkManager.Instance.GetItem(i);     //¥Í¿∫ æ∆¿Ã≈€ ¿Œµ¶Ω∫ ¿¸º€
+                    NetworkManager.Instance.GetItem(ItemList.IndexOf(ItemObj));     //¥Í¿∫ æ∆¿Ã≈€ ¿Œµ¶Ω∫ ¿¸º€
+                    ItemList[ItemList.IndexOf(ItemObj)].SetActive(false);
                 }
-            
+
             });
 
         }

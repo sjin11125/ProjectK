@@ -17,12 +17,14 @@ app.get('/', (req, res) => {
 
 http.listen(4444,()=>{
     console.log('서버 시작~~');
- 
+    
 });
 
 io.on('connection',(socket)=>{          //클라와 연결되면
 
 console.log('연결된 유저: '+socket.id);
+
+let Roomid; 
 
 socket.on('CreateRoom',()=>{            //방 생성할거니까 룸 id 생성해달라고 클라가 요청
 //방 생성 후 플레이어 참가
@@ -44,6 +46,7 @@ var id;
 
      socket.join(id);       //룸 드가기
      console.log('생성된 방 id: '+ id);
+     socket.Roomid=id;
 socket.emit('CreateRoom',id);           //쌍따옴표 없음
 });
 
@@ -54,7 +57,7 @@ socket.on('EnterRoom',(id)=>{           //방 들어가기
     socket.join(id);       //룸 드가기
 
     var seed=randSeed();            //랜덤 시드 정하기
-
+    socket.Roomid=id;
    io.to(id).emit('GameStart',seed);       //룸에 있는 사람들에게 보내기 게임 스타트
 });
 
@@ -71,7 +74,10 @@ posInfo.RoomId=posInfo.RoomId.replaceAll("\"", "");     //큰따옴표 제거
 socket.on('GetItem',(index)=>{           //아이템 획득하기
     console.log('아이템 획득');
 
-   socket.to(posInfo.RoomId).emit('GetItem',index);    
+    //index=index.replaceAll("\"", "");
+    console.log('아이템 인덱스: '+JSON.stringify(index));
+ 
+   socket.to(socket.Roomid).emit('GetItem',index);    
 });
 
 
