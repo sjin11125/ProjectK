@@ -19,6 +19,8 @@ public class ItemSpawner : MonoBehaviour
     public GameObject ItemParent;
     [SerializeField]
     List<GameObject> ItemList = new List<GameObject>();
+
+    public SkillManager skillManager;
     void Start()
     {   //시드값으로 랜덤생성
 
@@ -60,7 +62,7 @@ public class ItemSpawner : MonoBehaviour
                     NetworkManager.Instance.GetItem(ItemList.IndexOf(ItemObj));     //닿은 아이템 인덱스 전송
                     ItemList[ItemList.IndexOf(ItemObj)].SetActive(false);
 
-
+                    skillManager.Exp += 10f;        //경험치 반영
                 }
 
             });

@@ -15,7 +15,7 @@ public class MoveController : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndD
     public GameObject[] Characters;
     bool isMove;
 
-    public SkillManager skillManager;
+
     public void OnBeginDrag(PointerEventData eventData)
     {
         FirstPos = transform.position;         //처음 위치 저장
