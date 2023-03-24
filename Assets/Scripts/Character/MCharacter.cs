@@ -19,7 +19,7 @@ public class MCharacter : MonoBehaviour
     public float Distance=10;
 
     public bool isAuto;     //자동 이동인지
-    void Start()
+    public virtual void Start()
     {
         MAnimator = GetComponent<Animator>();
         isAuto = true;
@@ -86,4 +86,11 @@ public class MCharacter : MonoBehaviour
       //  AttackObj.transform.position = AttackPos.transform.position ;
 
     }
+  /*  public void OnTriggerEnter(Collider other)
+    {
+        if (other.transform.tag.Equals("Item"))
+        {
+            NetworkManager.Instance.GetItem();
+        }
+    }*/
 }

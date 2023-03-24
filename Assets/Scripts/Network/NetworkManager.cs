@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 public class NetworkManager : Singleton<NetworkManager>
 {
-    Socket socket;
+    public ReactiveProperty<Socket> socket;
     public ReactiveProperty<string> roomId;
 
     public ReactiveProperty<bool> IsOtherCharacterMove;     //다른 캐릭터가 움직였니?!!?!!?!?!?!?!?!?
@@ -17,21 +17,23 @@ public class NetworkManager : Singleton<NetworkManager>
     public ReactiveProperty<int> RandomSeed;
 
     public PlayerName player= PlayerName.None;
+
+    public ReactiveProperty<Func> Funcs;
     
     void Start()
     {
-      socket = Socket.Connect("http://localhost:4444");
+      socket.Value = Socket.Connect("http://localhost:4444");
 
-        socket.On(SystemEvents.connect, () =>{
+        socket.Value.On(SystemEvents.connect, () =>{
             Debug.Log("연결 성공");
         });
-        socket.On("CreateRoom", (string Id) => {
+        socket.Value.On("CreateRoom", (string Id) => {
             Debug.Log("룸 id: " + Id);
             player = PlayerName.Player1;
             roomId.Value = Id;
         });
         
-        socket.On("GameStart", (string seed) => {
+        socket.Value.On("GameStart", (string seed) => {
             Debug.Log(" 게임 스타트");
 
             if (player == PlayerName.None)
@@ -43,7 +45,7 @@ public class NetworkManager : Singleton<NetworkManager>
             SceneManager.LoadScene("Multi");
         });
         //socket.On
-        socket.On("MoveOtherPlayer", (string pos) => {
+        socket.Value.On("MoveOtherPlayer", (string pos) => {
 
             IsOtherCharacterMove.Value = true;
             MovePosDir movePosDir = JsonUtility.FromJson<MovePosDir>(pos);
@@ -52,19 +54,25 @@ public class NetworkManager : Singleton<NetworkManager>
                 OtherCharacterMove.Value = movePosDir;
             }
         });
+        //socket.On
+       /* socket.Value.On("GetItem", (string index) => {
+            this.Funcs.Value = Func.GetItem;
+            IsOtherCharacterMove.Value = true;
+      
+        });*/
 
     }
 
     public void CreateRoom()
     {
        // string roomId;
-        socket.Emit("CreateRoom");
+        socket.Value.Emit("CreateRoom");
  
     }
     public void EnterRoom(string id)
     {
        // string roomId;
-        socket.Emit("EnterRoom",id);
+        socket.Value.Emit("EnterRoom",id);
  
     }
     public void MovePlayer(Vector3 dir,Vector3 pos)
@@ -76,8 +84,13 @@ public class NetworkManager : Singleton<NetworkManager>
         move.Pos = pos;
         string MoveToJson = JsonUtility.ToJson(move);
         //Debug.Log(MoveToJson);
-        socket.EmitJson("MovePlayer", MoveToJson);
+        socket.Value.EmitJson("MovePlayer", MoveToJson);
        // "{ \"my\": \"data\" }"
+    }
+
+    public void GetItem(int index)
+    {
+        socket.Value.Emit("GetItem",index.ToString());
     }
 
 }

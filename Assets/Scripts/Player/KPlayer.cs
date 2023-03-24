@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UniRx;
 
 public class KPlayer : MCharacter
 {
@@ -13,6 +14,22 @@ public class KPlayer : MCharacter
 
     public GameObject Skillpos;
 
+    public override void Start()
+    {
+        base.Start();
+        NetworkManager.Instance.Funcs.Subscribe((func)=> {
+            switch (func)
+            {
+                case Func.GetItem:
+
+                    break;
+
+                default:
+                    break;
+            }
+
+        });
+    }
     public override void Update()
     {
         if (transform.CompareTag(NetworkManager.Instance.player.ToString()))

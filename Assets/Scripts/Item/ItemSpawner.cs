@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
+using UniRx.Triggers;
 
 public class ItemSpawner : MonoBehaviour
 {
@@ -27,6 +28,13 @@ public class ItemSpawner : MonoBehaviour
 
         });
         ItemObjSetting(NetworkManager.Instance.RandomSeed.Value);
+
+        NetworkManager.Instance.socket.Value.On("GetItem", (string index) => {
+
+            Debug.Log("아이템 획득");
+
+            ItemList[int.Parse( index)].SetActive(false);
+        });
     }
     public void ItemObjSetting(int seed)
     {
@@ -41,6 +49,14 @@ public class ItemSpawner : MonoBehaviour
             } while ((ItemObj.transform.localPosition.x<=20&& ItemObj.transform.localPosition.x>=-20)||
             (ItemObj.transform.localPosition.z <= 20 && ItemObj.transform.localPosition.z >= -27));
             ItemList.Add(ItemObj);
+            ItemObj.OnTriggerEnterAsObservable().Subscribe((other)=> {
+                if (other.CompareTag(NetworkManager.Instance.player.ToString()))            //유저가 아이템에 닿으면
+                {
+                    NetworkManager.Instance.GetItem(i);     //닿은 아이템 인덱스 전송
+                }
+            
+            });
+
         }
            
         

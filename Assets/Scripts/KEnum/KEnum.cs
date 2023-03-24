@@ -25,3 +25,8 @@ public enum Skill
     Thunder,        //번개 발사기
 }
 
+public enum Func
+{
+    GetItem
+}
+

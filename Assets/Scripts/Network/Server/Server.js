@@ -68,6 +68,13 @@ posInfo.RoomId=posInfo.RoomId.replaceAll("\"", "");     //큰따옴표 제거
    io.to(posInfo.RoomId).emit('MoveOtherPlayer',posInfo);    
 });
 
+socket.on('GetItem',(index)=>{           //아이템 획득하기
+    console.log('아이템 획득');
+
+   socket.to(posInfo.RoomId).emit('GetItem',index);    
+});
+
+
 });
 
 function randSeed()
