@@ -15,6 +15,7 @@ public class MoveController : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndD
     public GameObject[] Characters;
     bool isMove;
 
+    public SkillManager skillManager;
 
     public void OnBeginDrag(PointerEventData eventData)
     {
@@ -47,11 +48,15 @@ public class MoveController : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndD
             case PlayerName.Player1:
                 character = Characters[0].GetComponent<MCharacter>();
                 Othercharacter= Characters[1].GetComponent<MCharacter>();
+
+                skillManager.Player= Characters[0].GetComponent<KPlayer>(); ;
                 break;
 
             case PlayerName.Player2:
                 character = Characters[1].GetComponent<MCharacter>();
                 Othercharacter = Characters[0].GetComponent<MCharacter>();
+
+                skillManager.Player = Characters[1].GetComponent<KPlayer>(); ;
 
                 break;
 
