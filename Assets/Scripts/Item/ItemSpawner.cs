@@ -62,7 +62,7 @@ public class ItemSpawner : MonoBehaviour
                     NetworkManager.Instance.GetItem(ItemList.IndexOf(ItemObj));     //닿은 아이템 인덱스 전송
                     ItemList[ItemList.IndexOf(ItemObj)].SetActive(false);
 
-                    skillManager.Exp += 10f;        //경험치 반영
+                    skillManager.GetReward();
                 }
 
             });
@@ -71,4 +71,5 @@ public class ItemSpawner : MonoBehaviour
            
         
     }
+
 }

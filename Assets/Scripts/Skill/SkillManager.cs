@@ -16,12 +16,19 @@ public class SkillManager : MonoBehaviour
 
     [SerializeField]
     List<GameObject> SkillPrefab;
+
+    public GameObject SkillLevelUpPopUp;
     public KPlayer Player;
+
+    public Slider ExpSlider;
 
     public float Exp;
     // Start is called before the first frame update
     private void Start()
     {
+        ExpSlider.maxValue = 100;
+        ExpSlider.minValue = 0;
+
         TextAsset csvData = Resources.Load<TextAsset>("SkillList");      //스킬 정보 엑셀 파일 파싱
 
         string[] data = csvData.text.Split(new char[] { '\n' });    //엔터 기준으로 쪼갬
@@ -71,18 +78,30 @@ public class SkillManager : MonoBehaviour
                     MySkills.Add(item.skillInfo.EngName, skillObjSkillBase);         //새로운 스킬 추가
 
                 }
-
+                SkillLevelUpPopUp.SetActive(false);
                 //Player.SkillUpdate(MySkills[item.skillInfo.EngName]);           //스킬 업데이트
 
             });
+  
+
         }
-        SkillLevelUp();
+       // SkillLevelUp();
 
     }
 
+    public void GetReward()
+    {
+        Exp += 10;
+        ExpSlider.value = Exp;
+        if (Exp>=100)
+        {
+            Exp = 0;
+            SkillLevelUp();
+        }
+    }
     public void SkillLevelUp()
     {
-
+        SkillLevelUpPopUp.SetActive(true);
         for (int i = 0; i < 3; i++)
         {
             string randNum;
