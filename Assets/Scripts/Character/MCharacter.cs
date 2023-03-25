@@ -97,6 +97,7 @@ public class MCharacter : MonoBehaviour
                 AttackObj = Instantiate(AttackPrefab) as GameObject;         //공격 프리팹 생성
                 AttakObjPool.Add(AttackObj);
             }
+
             Observable.EveryUpdate().Where(_ => (AttackObj.transform.position - transform.position).magnitude >= 3).Subscribe(_ => {
                 AttackObj.SetActive(false);
 
