@@ -68,14 +68,5 @@ public class KPlayer : MCharacter
         }
     }
 
-    public void Reward(float Exp)            //몬스터 죽이고 보상받기
-    {
-        this.Exp += Exp;
-        if (this.Exp>=100)
-        {
-            this.Exp = 0;
-            GameManager.Instance.SkillLevelUp();
-        }
-    }
 
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UniRx;
 
 public class MCharacter : MonoBehaviour
 {
@@ -19,10 +20,14 @@ public class MCharacter : MonoBehaviour
     public float Distance=10;
 
     public bool isAuto;     //자동 이동인지
+
+    List<GameObject> AttakObjPool=new List<GameObject> ();      //공격 오브젝트 풀
     public virtual void Start()
     {
         MAnimator = GetComponent<Animator>();
         isAuto = true;
+
+        StartCoroutine(Attack());           //공격 코루틴
     }
     public virtual void Update()
     {
@@ -80,10 +85,29 @@ public class MCharacter : MonoBehaviour
 
     }
 
-    public void Attack()        //공격 애니메이션에서 사용될 이벤트 함수
+    public IEnumerator Attack()       
     {
-      //  GameObject AttackObj = Instantiate(AttackPrefab) as GameObject;         //공격 프리팹 생성
-      //  AttackObj.transform.position = AttackPos.transform.position ;
+        while (true)
+        {
+            GameObject AttackObj = AttakObjPool.Find(x => x.activeSelf == true);
+
+        
+            if (AttackObj == null)                //오브젝트 풀에 활성화된게 없으면
+            {
+                AttackObj = Instantiate(AttackPrefab) as GameObject;         //공격 프리팹 생성
+                AttakObjPool.Add(AttackObj);
+            }
+            Observable.EveryUpdate().Where(_ => (AttackObj.transform.position - transform.position).magnitude >= 3).Subscribe(_ => {
+                AttackObj.SetActive(false);
+
+            }).AddTo(AttackObj);
+
+            AttackObj.transform.position = AttackPos.transform.position;
+
+
+            yield return new WaitForSeconds(2f);
+
+        }
 
     }
   /*  public void OnTriggerEnter(Collider other)

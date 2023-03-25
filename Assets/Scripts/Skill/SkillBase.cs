@@ -57,7 +57,7 @@ public class SkillBase : MonoBehaviour
                 break;
             default:
 
-               // StartCoroutine(BasicCorountine());
+                StartCoroutine(BasicCorountine());
                 break;
         }
     }
