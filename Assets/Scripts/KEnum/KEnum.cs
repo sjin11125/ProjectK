@@ -19,6 +19,7 @@ public enum PlayerName
 }
 public enum Skill
 {
+    Basic,
     Top,        //ÆØÀÌ
     Shield,         //¹æ¾î¸·
     Bomb,     //ÆøÅº

@@ -89,16 +89,19 @@ public class MCharacter : MonoBehaviour
     {
         while (true)
         {
-            GameObject AttackObj = AttakObjPool.Find(x => x.activeSelf == true);
+            GameObject AttackObj = AttakObjPool.Find(x => x.activeSelf == false);
 
         
             if (AttackObj == null)                //오브젝트 풀에 활성화된게 없으면
             {
                 AttackObj = Instantiate(AttackPrefab) as GameObject;         //공격 프리팹 생성
-                AttakObjPool.Add(AttackObj);
-            }
+                AttakObjPool.Add(AttackObj);            //위치 설정
 
-            Observable.EveryUpdate().Where(_ => (AttackObj.transform.position - transform.position).magnitude >= 3).Subscribe(_ => {
+                
+            }
+            AttackObj.transform.eulerAngles = gameObject.transform.eulerAngles;     //공격 프리팹 각도 설정(캐릭터가 바라보는 쪽으로 )
+
+            Observable.EveryUpdate().Where(_ => (AttackObj.transform.position - transform.position).magnitude >= 50).Subscribe(_ => {
                 AttackObj.SetActive(false);
 
             }).AddTo(AttackObj);
@@ -106,7 +109,7 @@ public class MCharacter : MonoBehaviour
             AttackObj.transform.position = AttackPos.transform.position;
 
 
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(3f);
 
         }
 
