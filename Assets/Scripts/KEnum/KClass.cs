@@ -51,3 +51,15 @@ public struct MovePosDir
     public Vector3 Pos;
     public Vector3 Dir;
 }
+[Serializable] 
+public struct AttackInfo
+{
+    public string PlayerName;           //공격한사람 이름
+    public string Damage;           //데미지
+}
+[Serializable] 
+public struct SkillInfos
+{
+    public string SkillName;           //스킬 종류
+    public string level;           //레벨
+}

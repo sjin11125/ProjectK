@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Linq;
+using socket.io;
+using UniRx;
 
 public class SkillManager : MonoBehaviour
 {
@@ -18,16 +20,25 @@ public class SkillManager : MonoBehaviour
     List<GameObject> SkillPrefab;
 
     public GameObject SkillLevelUpPopUp;
+
     public KPlayer Player;
+    public KPlayer OtherPlayer;
 
     public Slider ExpSlider;
+    public Slider HpSlider;
+    public Slider OtherHpSlider;
 
     public float Exp;
+    public int HP=100;
+    public int OtherHP=100;
     // Start is called before the first frame update
     private void Start()
     {
         ExpSlider.maxValue = 100;
         ExpSlider.minValue = 0;
+
+        
+
 
         TextAsset csvData = Resources.Load<TextAsset>("SkillList");      //스킬 정보 엑셀 파일 파싱
 
@@ -73,22 +84,55 @@ public class SkillManager : MonoBehaviour
                    // skillPrefab.transform.localPosition
 
                     SkillBase skillObjSkillBase=skillPrefab.GetComponent<SkillBase>();
+
                     skillObjSkillBase.SetSkillInfo( item.skillInfo);            //스킬 정보 세팅
+                    //skillObjSkillBase.skillManager = this;
 
                     MySkills.Add(item.skillInfo.EngName, skillObjSkillBase);         //새로운 스킬 추가
 
                 }
-                SkillLevelUpPopUp.SetActive(false);
+
+                NetworkManager.Instance.SkillUpdate(MySkills[item.skillInfo.EngName].SkillName.ToString(), MySkills[item.skillInfo.EngName].level.ToString());
+                //서버에 스킬 정보 전달
+
+                SkillLevelUpPopUp.SetActive(false);     //팝업창 끄기
                 //Player.SkillUpdate(MySkills[item.skillInfo.EngName]);           //스킬 업데이트
 
             });
   
 
         }
-       // SkillLevelUp();
 
+        // SkillLevelUp();
+        NetworkManager.Instance.socket.Value.On("SkillUpdate",(string skill)=> {            //다른 플레이어 스킬 업데이트
+
+            SkillInfos skillInfo = JsonUtility.FromJson<SkillInfos>(skill);
+            GameObject skillObj = SkillPrefab.Find(x => x.GetComponent<SkillBase>().SkillName.ToString() == skillInfo.SkillName);
+
+            GameObject skillPrefab = Instantiate(skillObj, OtherPlayer.Skillpos.transform) as GameObject;
+
+        });
+        NetworkManager.Instance.socket.Value.On("Attacked",(string attack)=> {            //공격받았다
+
+            AttackInfo attackInfo = JsonUtility.FromJson<AttackInfo>(attack);
+
+            if (attackInfo.PlayerName!=NetworkManager.Instance.player.ToString())       //내 캐릭터가 공격받은거라면?
+            {
+                HP -= int.Parse(attackInfo.Damage);
+                HpSlider.value = HP;
+            }
+            else     //내 캐릭터가 공격받은게 아니라면
+            {
+                OtherHP -= int.Parse(attackInfo.Damage);
+                OtherHpSlider.value = OtherHP;
+               
+            }
+        });
     }
-
+    public void OtherDamaged(int damage)
+    {
+       
+    }
     public void GetReward()
     {
         Exp += 10;

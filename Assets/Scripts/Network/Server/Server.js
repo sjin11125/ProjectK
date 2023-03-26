@@ -80,6 +80,21 @@ socket.on('GetItem',(index)=>{           //아이템 획득하기
    socket.to(socket.Roomid).emit('GetItem',index);    
 });
 
+socket.on('Attack',(damage)=>{           //아이템 획득하기
+    console.log('공격당함');
+
+ 
+   io.to(socket.Roomid).emit('Attacked',damage);    
+});
+
+socket.on('SkillUpdate',(skill)=>{           //아이템 획득하기
+    console.log('스킬 업데이트');
+    const skillInfo=JSON.parse(JSON.stringify( skill));
+ 
+   socket.to(socket.Roomid).emit('SkillUpdate',skillInfo);    
+});
+
+
 
 });
 

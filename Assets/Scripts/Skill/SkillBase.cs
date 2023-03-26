@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UniRx;
+using UniRx.Triggers;
+using System;
 
 public class SkillBase : MonoBehaviour
 {
@@ -14,7 +17,10 @@ public class SkillBase : MonoBehaviour
     public int coolTime;
     public int count ;      //갯수
 
+    public PlayerName Owner;
+
     public GameObject[] Prefabs;
+    IDisposable triggerStream;
     public SkillBase(SkillInfo skillInfo)
     {
         Name = skillInfo.Name;
@@ -37,36 +43,85 @@ public class SkillBase : MonoBehaviour
         this.coolTime = skillInfo.CoolTime[0];
         this.count = skillInfo.Count[0];
     }
+    /*public void SetSkillInfo(int level)
+    {
+        //Name = skillInfo.Name;
+        Speed = skillInfo.Speed[0];
+        Damage = skillInfo.Damage[0];
+        this.level = 0;
+        Radius = skillInfo.Radius[0];
+        this.coolTime = skillInfo.CoolTime[0];
+        this.count = skillInfo.Count[0];
+    }*/
     //public SkillInfo skillInfo;
 
     // Start is called before the first frame update
 
     private void OnEnable()
     {
+      
+       
         switch (SkillName)
         {
             case Skill.Top:
-
+            //    OnTriggerSubscribe((int)Damage);
                 StartCoroutine(TopCorountine());
                 break;
             case Skill.Shield:
+                //    OnTriggerSubscribe((int)Damage);
+                StartCoroutine(ShiledCoroutine());
                 break;
             case Skill.Bomb:
+            //    OnTriggerSubscribe((int)Damage);
                 break;
             case Skill.Thunder:
+             //   OnTriggerSubscribe((int)Damage);
                 StartCoroutine(ThunderCorountine());
                 break;
             default:
-
+          
                 StartCoroutine(BasicCorountine());
                 break;
         }
+        OnTriggerSubscribe((int)Damage);
     }
-    private void Start()
+
+    public void OnTriggerSubscribe(int damage)
     {
-        
+
+
+       triggerStream =   gameObject.OnTriggerEnterAsObservable().Subscribe(other => {
+            switch (Owner)          //자기가 공격한 건 안맞음
+            {
+                case PlayerName.Player1:
+                    if (other.tag.Equals(PlayerName.Player2.ToString()))
+                    {
+                        NetworkManager.Instance.Attack(damage);
+                        gameObject.SetActive(false);
+                   
+                    }
+                    break;
+
+                case PlayerName.Player2:
+                    if (other.tag.Equals(PlayerName.Player1.ToString()))
+                    {
+                        NetworkManager.Instance.Attack(damage);
+                        gameObject.SetActive(false);
+                     
+                    }
+                    break;
+                default:
+                    break;
+            }
+            //skillManager.OtherDamaged(damage);      //다른 플레이어 HP 반영
+        }).AddTo(gameObject);
+
     }
-    
+
+    public void OnDisable()
+    {
+        triggerStream.Dispose();
+    }
 
     IEnumerator BasicCorountine()       //기본 공격
     {
@@ -105,6 +160,16 @@ public class SkillBase : MonoBehaviour
             yield return new WaitForSeconds(coolTime);
         }
     }
+    IEnumerator ShiledCoroutine()
+    {
+        while (true)
+        {
+            Prefabs[0].SetActive(true);
+            Prefabs[0].transform.localScale = new Vector3(Prefabs[0].transform.localScale.x + level + 1, Prefabs[0].transform.localScale.y, Prefabs[0].transform.localScale.z + level + 1);
+
+            yield return null;
+        }
+    }
     IEnumerator ThunderCorountine()       //번개 공격
     {
         List<GameObject> ThunderObjPool=new List<GameObject> ();
@@ -116,8 +181,8 @@ public class SkillBase : MonoBehaviour
 
                 ThunderObjPool.Add(ThunderObj);     //오브젝트 풀에 추가
                 Vector3 pos = ThunderObj.transform.position;
-                ThunderObj.transform.position = new Vector3(pos.x+Random.Range(-10,10),pos.y,
-                                                            pos.z + Random.Range(-10, 10)); //랜덤위치 생성
+                ThunderObj.transform.position = new Vector3(pos.x+ UnityEngine.Random.Range(-10,10),pos.y,
+                                                            pos.z + UnityEngine.Random.Range(-10, 10)); //랜덤위치 생성
             }
             else
             {

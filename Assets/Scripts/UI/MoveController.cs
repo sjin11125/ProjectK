@@ -49,7 +49,8 @@ public class MoveController : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndD
                 character = Characters[0].GetComponent<MCharacter>();
                 Othercharacter= Characters[1].GetComponent<MCharacter>();
 
-                skillManager.Player= Characters[0].GetComponent<KPlayer>(); ;
+                skillManager.Player= Characters[0].GetComponent<KPlayer>(); 
+                skillManager.OtherPlayer= Characters[1].GetComponent<KPlayer>(); 
                 break;
 
             case PlayerName.Player2:
@@ -57,6 +58,7 @@ public class MoveController : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndD
                 Othercharacter = Characters[0].GetComponent<MCharacter>();
 
                 skillManager.Player = Characters[1].GetComponent<KPlayer>(); ;
+                skillManager.OtherPlayer = Characters[0].GetComponent<KPlayer>(); ;
 
                 break;
 

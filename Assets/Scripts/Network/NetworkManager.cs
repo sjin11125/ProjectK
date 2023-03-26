@@ -77,7 +77,7 @@ public class NetworkManager : Singleton<NetworkManager>
     }
     public void MovePlayer(Vector3 dir,Vector3 pos)
     {
-        MovePosDir move=new MovePosDir();
+        MovePosDir move;
         move.RoomId = roomId.Value;
         move.PlayerName = player.ToString();
         move.Dir = dir;
@@ -92,5 +92,22 @@ public class NetworkManager : Singleton<NetworkManager>
     {
         socket.Value.Emit("GetItem", index.ToString());
     }
+    public void Attack(int damage)
+    {
+        AttackInfo attack;
+        attack.PlayerName = player.ToString();
+        attack.Damage = damage.ToString();
 
+        string AttackToJson = JsonUtility.ToJson(attack);
+        socket.Value.EmitJson("Attack", AttackToJson);
+    }
+    public void SkillUpdate(string skillName, string level)
+    {
+        SkillInfos skillInfo;
+        skillInfo.SkillName = skillName;
+        skillInfo.level = level;
+
+        string SkillToJson = JsonUtility.ToJson(skillInfo);
+        socket.Value.EmitJson("SkillUpdate", SkillToJson);
+    }
 }

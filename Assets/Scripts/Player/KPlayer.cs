@@ -10,7 +10,7 @@ public class KPlayer : MCharacter
     [SerializeField]
     List<MonsterSpawner> MonsterSpawn;
 
-    public float Exp;
+
 
     public GameObject Skillpos;
 

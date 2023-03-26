@@ -14,7 +14,7 @@ public class MCharacter : MonoBehaviour
     Animator MAnimator;
 
     public GameObject Target;
-    public GameObject AttackPrefab;
+    public GameObject[] AttackPrefab;
     public GameObject AttackPos;
 
     public float Distance=10;
@@ -22,6 +22,8 @@ public class MCharacter : MonoBehaviour
     public bool isAuto;     //자동 이동인지
 
     List<GameObject> AttakObjPool=new List<GameObject> ();      //공격 오브젝트 풀
+
+ 
     public virtual void Start()
     {
         MAnimator = GetComponent<Animator>();
@@ -94,8 +96,18 @@ public class MCharacter : MonoBehaviour
         
             if (AttackObj == null)                //오브젝트 풀에 활성화된게 없으면
             {
-                AttackObj = Instantiate(AttackPrefab) as GameObject;         //공격 프리팹 생성
-                AttakObjPool.Add(AttackObj);            //위치 설정
+                if (tag.Equals(PlayerName.Player1.ToString()))
+                {
+                    AttackObj = Instantiate(AttackPrefab[0]) as GameObject;         //공격 프리팹 생성
+                    AttakObjPool.Add(AttackObj);            //위치 설정
+                }
+                else
+                {
+                    AttackObj = Instantiate(AttackPrefab[1]) as GameObject;         //공격 프리팹 생성
+                    AttakObjPool.Add(AttackObj);            //위치 설정
+
+                }
+               
 
                 
             }
