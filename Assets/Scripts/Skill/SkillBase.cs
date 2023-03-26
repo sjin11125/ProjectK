@@ -40,7 +40,8 @@ public class SkillBase : MonoBehaviour
     //public SkillInfo skillInfo;
 
     // Start is called before the first frame update
-    private void Start()
+
+    private void OnEnable()
     {
         switch (SkillName)
         {
@@ -60,6 +61,10 @@ public class SkillBase : MonoBehaviour
                 StartCoroutine(BasicCorountine());
                 break;
         }
+    }
+    private void Start()
+    {
+        
     }
     
 

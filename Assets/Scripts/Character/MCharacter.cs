@@ -99,6 +99,7 @@ public class MCharacter : MonoBehaviour
 
                 
             }
+            AttackObj.SetActive(true);
             AttackObj.transform.eulerAngles = gameObject.transform.eulerAngles;     //공격 프리팹 각도 설정(캐릭터가 바라보는 쪽으로 )
 
             Observable.EveryUpdate().Where(_ => (AttackObj.transform.position - transform.position).magnitude >= 50).Subscribe(_ => {
