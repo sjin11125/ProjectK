@@ -110,8 +110,12 @@ public class SkillManager : MonoBehaviour
             GameObject skillObj = SkillPrefab.Find(x => x.GetComponent<SkillBase>().SkillName.ToString() == skillInfo.SkillName);
 
             GameObject skillPrefab = Instantiate(skillObj, OtherPlayer.Skillpos.transform) as GameObject;
+            SkillBase skillObjSkillBase = skillPrefab.GetComponent<SkillBase>();
 
+            skillObjSkillBase.SetSkillInfo(AllSkills[skillInfo.SkillName],int.Parse( skillInfo.level));            //스킬 정보 세팅
         });
+
+
         NetworkManager.Instance.socket.Value.On("Attacked",(string attack)=> {            //공격받았다
 
             AttackInfo attackInfo = JsonUtility.FromJson<AttackInfo>(attack);

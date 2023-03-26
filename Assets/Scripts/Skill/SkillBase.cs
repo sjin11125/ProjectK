@@ -43,6 +43,16 @@ public class SkillBase : MonoBehaviour
         this.coolTime = skillInfo.CoolTime[0];
         this.count = skillInfo.Count[0];
     }
+    public void SetSkillInfo(SkillInfo skillInfo,int level)
+    {
+        Name = skillInfo.Name;
+        Speed = skillInfo.Speed[level];
+        Damage = skillInfo.Damage[level];
+        this.level = level;
+        Radius = skillInfo.Radius[level];
+        this.coolTime = skillInfo.CoolTime[level];
+        this.count = skillInfo.Count[level];
+    }
     /*public void SetSkillInfo(int level)
     {
         //Name = skillInfo.Name;
