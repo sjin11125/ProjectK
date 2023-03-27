@@ -172,10 +172,13 @@ public class SkillBase : MonoBehaviour
     }
     IEnumerator ShiledCoroutine()
     {
+        Vector3 ShiledScale = gameObject.transform.localScale;
         while (true)
         {
-            Prefabs[0].SetActive(true);
-            Prefabs[0].transform.localScale = new Vector3(Prefabs[0].transform.localScale.x + level + 1, Prefabs[0].transform.localScale.y, Prefabs[0].transform.localScale.z + level + 1);
+
+
+            // Prefabs[0].SetActive(true);
+            gameObject.transform.localScale = new Vector3(ShiledScale.x + Radius + 1, ShiledScale.y, ShiledScale.z + Radius + 1);
 
             yield return null;
         }

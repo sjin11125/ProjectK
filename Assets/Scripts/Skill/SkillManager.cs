@@ -15,6 +15,7 @@ public class SkillManager : MonoBehaviour
 
     public Dictionary<string, SkillInfo> AllSkills = new Dictionary<string, SkillInfo>();        //모든 기술 정보
     public Dictionary<string, SkillBase> MySkills = new Dictionary<string, SkillBase>();            //현재 플레이어가 가지고 있는 스킬들
+    public Dictionary<string, SkillBase> OtherSkills = new Dictionary<string, SkillBase>();            //다른 플레이어가 가지고 있는 스킬들
 
     [SerializeField]
     List<GameObject> SkillPrefab;
@@ -105,14 +106,30 @@ public class SkillManager : MonoBehaviour
 
         // SkillLevelUp();
         NetworkManager.Instance.socket.Value.On("SkillUpdate",(string skill)=> {            //다른 플레이어 스킬 업데이트
+           
+                SkillInfos skillInfo = JsonUtility.FromJson<SkillInfos>(skill);
 
-            SkillInfos skillInfo = JsonUtility.FromJson<SkillInfos>(skill);
-            GameObject skillObj = SkillPrefab.Find(x => x.GetComponent<SkillBase>().SkillName.ToString() == skillInfo.SkillName);
+            if (OtherSkills.ContainsKey(skillInfo.SkillName))          //해당 스킬이 있으면
+            {
+                OtherSkills[skillInfo.SkillName].level += 1; //레벨 추가
+                OtherSkills[skillInfo.SkillName].Speed = AllSkills[skillInfo.SkillName].Speed[OtherSkills[skillInfo.SkillName].level]; //스피드 업데이트
+                OtherSkills[skillInfo.SkillName].Damage = AllSkills[skillInfo.SkillName].Damage[OtherSkills[skillInfo.SkillName].level]; //데미지 업데이트
+                OtherSkills[skillInfo.SkillName].Radius = AllSkills[skillInfo.SkillName].Radius[OtherSkills[skillInfo.SkillName].level]; //범위 업데이트
+                OtherSkills[skillInfo.SkillName].coolTime = AllSkills[skillInfo.SkillName].CoolTime[OtherSkills[skillInfo.SkillName].level]; //쿨타임 업데이트
+                OtherSkills[skillInfo.SkillName].count = AllSkills[skillInfo.SkillName].Count[OtherSkills[skillInfo.SkillName].level]; //개수 업데이트
+            }
+            else                                                            //해당 스킬이 없으면
+            {
+                GameObject skillObj = SkillPrefab.Find(x => x.GetComponent<SkillBase>().SkillName.ToString() == skillInfo.SkillName);
 
-            GameObject skillPrefab = Instantiate(skillObj, OtherPlayer.Skillpos.transform) as GameObject;
-            SkillBase skillObjSkillBase = skillPrefab.GetComponent<SkillBase>();
+                GameObject skillPrefab = Instantiate(skillObj, OtherPlayer.Skillpos.transform) as GameObject;
+                SkillBase skillObjSkillBase = skillPrefab.GetComponent<SkillBase>();
 
-            skillObjSkillBase.SetSkillInfo(AllSkills[skillInfo.SkillName],int.Parse( skillInfo.level));            //스킬 정보 세팅
+                skillObjSkillBase.SetSkillInfo(AllSkills[skillInfo.SkillName], int.Parse(skillInfo.level));            //스킬 정보 세팅
+
+                OtherSkills.Add(skillInfo.SkillName, skillObjSkillBase);            //딕셔너리 추가
+            }
+           
         });
 
 
@@ -157,7 +174,7 @@ public class SkillManager : MonoBehaviour
             do
             {
                 int randSkill = Enum.GetNames(typeof(Skill)).Length;
-                randNum = ((Skill)UnityEngine.Random.Range(0, randSkill)).ToString();
+                randNum = ((Skill)UnityEngine.Random.Range(1, randSkill)).ToString();
 
             } while (ChoiceSkills.Any(x => x.skillInfo.Name == AllSkills[randNum].Name));       //중복 안되게
 
