@@ -45,6 +45,17 @@ public class KTool : EditorWindow
         }
         using (new EditorGUILayout.HorizontalScope())
         {
+            if (GUILayout.Button("룸씬"))
+            {
+                if (EditorSceneManager.GetActiveScene().isDirty)
+                {
+                    EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo();
+                }
+                EditorSceneManager.OpenScene("Assets/Scenes/Room.unity");
+            }
+        }
+        using (new EditorGUILayout.HorizontalScope())
+        {
             if (GUILayout.Button("게임씬"))
             {
                 if (EditorSceneManager.GetActiveScene().isDirty)

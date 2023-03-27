@@ -56,9 +56,9 @@ socket.on('EnterRoom',(id)=>{           //방 들어가기
     
     socket.join(id);       //룸 드가기
 
-    var seed=randSeed();            //랜덤 시드 정하기
+    
     socket.Roomid=id;
-   io.to(id).emit('GameStart',seed);       //룸에 있는 사람들에게 보내기 게임 스타트
+    socket.to(socket.Roomid).emit('EnterRoom',id);       //룸에 있는 사람들에게 보내기 게임 스타트
 });
 
 socket.on('MovePlayer',(pos)=>{           //캐릭터 움직이기
@@ -80,22 +80,39 @@ socket.on('GetItem',(index)=>{           //아이템 획득하기
    socket.to(socket.Roomid).emit('GetItem',index);    
 });
 
-socket.on('Attack',(damage)=>{           //아이템 획득하기
+socket.on('Attack',(damage)=>{           //공격
     console.log('공격당함');
 
  
    io.to(socket.Roomid).emit('Attacked',damage);    
 });
 
-socket.on('SkillUpdate',(skill)=>{           //아이템 획득하기
+socket.on('SkillUpdate',(skill)=>{           //스킬 업데이트
     console.log('스킬 업데이트');
     const skillInfo=JSON.parse(JSON.stringify( skill));
  
    socket.to(socket.Roomid).emit('SkillUpdate',skillInfo);    
 });
 
+socket.on('SendMessage',(message)=>{           //채팅 보내기
+
+    const chatInfo=JSON.parse(JSON.stringify( message));
+ 
+    io.to(socket.Roomid).emit('RecieveMessage',chatInfo);    
+});
 
 
+socket.on('Ready',(message)=>{           //레디
+
+ 
+   socket.to(socket.Roomid).emit('Ready');    
+});
+
+
+socket.on('GameStart',(message)=>{           //게임 시작
+    var seed=randSeed();            //랜덤 시드 정하기
+    io.to(socket.Roomid).emit('GameStart',seed);    
+ });
 });
 
 function randSeed()

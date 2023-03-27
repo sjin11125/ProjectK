@@ -63,3 +63,9 @@ public struct SkillInfos
     public string SkillName;           //스킬 종류
     public string level;           //레벨
 }
+[Serializable] 
+public struct ChatInfo
+{
+    public string PlayerName;           //플레이어 이름
+    public string Message;           //내용
+}

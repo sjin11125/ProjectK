@@ -31,6 +31,8 @@ public class NetworkManager : Singleton<NetworkManager>
             Debug.Log("·ë id: " + Id);
             player = PlayerName.Player1;
             roomId.Value = Id;
+
+            SceneManager.LoadScene("Room");
         });
         
         socket.Value.On("GameStart", (string seed) => {
@@ -43,6 +45,15 @@ public class NetworkManager : Singleton<NetworkManager>
         
 
             SceneManager.LoadScene("Multi");
+        });
+        socket.Value.On("EnterRoom", (string enter) => {
+            
+
+            if (player == PlayerName.None)
+             player = PlayerName.Player2;
+            SceneManager.LoadScene("Room");
+
+
         });
         //socket.On
         socket.Value.On("MoveOtherPlayer", (string pos) => {
@@ -67,6 +78,8 @@ public class NetworkManager : Singleton<NetworkManager>
     {
        // string roomId;
         socket.Value.Emit("CreateRoom");
+        SceneManager.LoadScene("Room");
+
  
     }
     public void EnterRoom(string id)
@@ -109,5 +122,24 @@ public class NetworkManager : Singleton<NetworkManager>
 
         string SkillToJson = JsonUtility.ToJson(skillInfo);
         socket.Value.EmitJson("SkillUpdate", SkillToJson);
+    }
+
+    public void SendMessage(string name, string message)
+    {
+        ChatInfo chatInfo;
+        chatInfo.PlayerName = name;
+        chatInfo.Message = message;
+
+        string MessageToJson = JsonUtility.ToJson(chatInfo);
+        socket.Value.EmitJson("SendMessage", MessageToJson);
+    }
+
+    public void Ready()
+    {
+        socket.Value.Emit("Ready");
+    }
+    public void GameStart()
+    {
+        socket.Value.Emit("GameStart");
     }
 }
