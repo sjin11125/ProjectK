@@ -58,7 +58,7 @@ socket.on('EnterRoom',(id)=>{           //방 들어가기
 
     
     socket.Roomid=id;
-    socket.to(socket.Roomid).emit('EnterRoom',id);       //룸에 있는 사람들에게 보내기 게임 스타트
+    io.to(socket.Roomid).emit('EnterRoom',id);       //룸에 있는 사람들에게 보내기 게임 스타트
 });
 
 socket.on('MovePlayer',(pos)=>{           //캐릭터 움직이기

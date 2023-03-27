@@ -18,9 +18,12 @@ public class RoomScene : MonoBehaviour
     public Button ChatSendBtn;
     public GameObject ChatPrefab;
 
+    public Text RoomIdText;
+
     bool isReady;
     void Start()
     {
+        RoomIdText.text = NetworkManager.Instance.roomId.Value;
         if (NetworkManager.Instance.player==PlayerName.Player2)
         {
             Player2Img.gameObject.SetActive(true);
@@ -37,12 +40,12 @@ public class RoomScene : MonoBehaviour
 
         });
 
-        NetworkManager.Instance.socket.Value.On("EnterRoom", ()=> {
+        NetworkManager.Instance.socket.Value.On("EnterRoom", (string id)=> {
             Player2Img.gameObject.SetActive(true);
 
         });
 
-        NetworkManager.Instance.socket.Value.On("Ready", ()=> {
+        NetworkManager.Instance.socket.Value.On("Ready", (string id)=> {
 
             isReady = true;
             ReadyBtn.enabled = false;
