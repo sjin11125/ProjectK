@@ -74,11 +74,11 @@ public class SkillBase : MonoBehaviour
         switch (SkillName)
         {
             case Skill.Top:
-            //    OnTriggerSubscribe((int)Damage);
+                OnTriggerSubscribe((int)Damage);
                 StartCoroutine(TopCorountine());
                 break;
             case Skill.Shield:
-                //    OnTriggerSubscribe((int)Damage);
+                OnTriggerStaySubscribe((int)Damage);
                 StartCoroutine(ShiledCoroutine());
                 break;
             case Skill.Bomb:
@@ -89,13 +89,40 @@ public class SkillBase : MonoBehaviour
                 StartCoroutine(ThunderCorountine());
                 break;
             default:
-          
+                OnTriggerSubscribe((int)Damage);
                 StartCoroutine(BasicCorountine());
                 break;
         }
-        OnTriggerSubscribe((int)Damage);
+        
     }
+    public void OnTriggerStaySubscribe(int damage)
+    {
+        triggerStream = gameObject.OnTriggerStayAsObservable().Subscribe(other=> {
 
+            switch (Owner)          //자기가 공격한 건 안맞음
+            {
+                case PlayerName.Player1:
+                    if (other.tag.Equals(PlayerName.Player2.ToString()))
+                    {
+                        NetworkManager.Instance.Attack(damage);
+                        gameObject.SetActive(false);
+
+                    }
+                    break;
+
+                case PlayerName.Player2:
+                    if (other.tag.Equals(PlayerName.Player1.ToString()))
+                    {
+                        NetworkManager.Instance.Attack(damage);
+                        gameObject.SetActive(false);
+
+                    }
+                    break;
+                default:
+                    break;
+            }
+        });
+    }
     public void OnTriggerSubscribe(int damage)
     {
 
