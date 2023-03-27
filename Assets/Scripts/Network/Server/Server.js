@@ -102,14 +102,15 @@ socket.on('SendMessage',(message)=>{           //채팅 보내기
 });
 
 
-socket.on('Ready',(message)=>{           //레디
-
+socket.on('Ready',()=>{           //레디
+    console.log('레디');
  
-   socket.to(socket.Roomid).emit('Ready');    
+   socket.to(socket.Roomid).emit('Ready','레디');    
 });
 
 
-socket.on('GameStart',(message)=>{           //게임 시작
+socket.on('GameStart',()=>{           //게임 시작
+    console.log('게임 시작');
     var seed=randSeed();            //랜덤 시드 정하기
     io.to(socket.Roomid).emit('GameStart',seed);    
  });

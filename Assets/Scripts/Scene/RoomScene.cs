@@ -48,7 +48,7 @@ public class RoomScene : MonoBehaviour
         NetworkManager.Instance.socket.Value.On("Ready", (string id)=> {
 
             isReady = true;
-            ReadyBtn.enabled = false;
+            ReadyBtn.interactable = false;
         });
         ChatSendBtn.OnClickAsObservable().Subscribe(_ => {           //채팅 Send 눌럿을때
 
@@ -61,7 +61,7 @@ public class RoomScene : MonoBehaviour
             if (NetworkManager.Instance.player== PlayerName.Player2)
             {
                 NetworkManager.Instance.Ready();
-                ReadyBtn.enabled = false;
+                ReadyBtn.interactable = false;
             }
         });
         StartBtn.OnClickAsObservable().Subscribe(_=> {

@@ -30,10 +30,10 @@ public class LobbyScene : MonoBehaviour
             NetworkManager.Instance.EnterRoom(RoomIdInput.text);
 
         });
-        NetworkManager.Instance.roomId.Subscribe(id=> {
+        /*NetworkManager.Instance.roomId.Subscribe(id=> {
 
             RoomIdText.text = id;
-        });
+        });*/
 
 
 
