@@ -12,7 +12,7 @@ public class ChatPrefabScript : MonoBehaviour
     {
 
         PlayerName.text = name;
-        PlayerName.text = message;
+        Message.text = message;
     }
 
 }

@@ -95,7 +95,7 @@ socket.on('SkillUpdate',(skill)=>{           //스킬 업데이트
 });
 
 socket.on('SendMessage',(message)=>{           //채팅 보내기
-
+    console.log('채팅');
     const chatInfo=JSON.parse(JSON.stringify( message));
  
     io.to(socket.Roomid).emit('RecieveMessage',chatInfo);    

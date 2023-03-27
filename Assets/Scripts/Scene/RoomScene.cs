@@ -21,8 +21,10 @@ public class RoomScene : MonoBehaviour
     public Text RoomIdText;
 
     bool isReady;
+    RectTransform ContentRect;
     void Start()
     {
+        ContentRect = ChatConent.GetComponent<RectTransform>();
         RoomIdText.text = NetworkManager.Instance.roomId.Value;
         if (NetworkManager.Instance.player==PlayerName.Player2)
         {
@@ -37,6 +39,8 @@ public class RoomScene : MonoBehaviour
 
             ChatPrefabScript chat = ChatObj.GetComponent<ChatPrefabScript>();
             chat.SettingChat(chatInfo.PlayerName, chatInfo.Message);
+
+            ContentRect.anchoredPosition = new Vector2(ContentRect.anchoredPosition.x, ContentRect.anchoredPosition.y+112);
 
         });
 
