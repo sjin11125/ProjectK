@@ -60,7 +60,7 @@ public class ItemSpawner : MonoBehaviour
                 if (other.CompareTag(NetworkManager.Instance.player.ToString()))            //유저가 아이템에 닿으면
                 {
                     NetworkManager.Instance.GetItem(ItemList.IndexOf(ItemObj));     //닿은 아이템 인덱스 전송
-                   // ItemList[ItemList.IndexOf(ItemObj)].SetActive(false);
+                    ItemList[ItemList.IndexOf(ItemObj)].SetActive(false);
 
                     skillManager.GetReward();
                 }
