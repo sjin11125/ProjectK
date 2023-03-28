@@ -27,12 +27,13 @@ public class NetworkManager : Singleton<NetworkManager>
         socket.Value.On(SystemEvents.connect, () =>{
             Debug.Log("연결 성공");
         });
+
         socket.Value.On("CreateRoom", (string Id) => {
             Debug.Log("룸 id: " + Id);
-            player = PlayerName.Player1;
-            roomId.Value = Id;
+            player = PlayerName.Player1;        //제일 먼저 들어온 플레이어를 Player1으로 설정
+            roomId.Value = Id;      //룸 Id 설정
 
-            SceneManager.LoadScene("Room");
+            SceneManager.LoadScene("Room");         //룸 씬 로드
         });
         
         socket.Value.On("GameStart", (string seed) => {
@@ -46,6 +47,7 @@ public class NetworkManager : Singleton<NetworkManager>
 
             SceneManager.LoadScene("Multi");
         });
+
         socket.Value.On("EnterRoom", (string enter) => {
             
 
@@ -55,7 +57,8 @@ public class NetworkManager : Singleton<NetworkManager>
 
 
         });
-        //socket.On
+
+
         socket.Value.On("MoveOtherPlayer", (string pos) => {
 
             IsOtherCharacterMove.Value = true;
@@ -65,26 +68,19 @@ public class NetworkManager : Singleton<NetworkManager>
                 OtherCharacterMove.Value = movePosDir;
             }
         });
-        //socket.On
-       /* socket.Value.On("GetItem", (string index) => {
-            this.Funcs.Value = Func.GetItem;
-            IsOtherCharacterMove.Value = true;
-      
-        });*/
+
+
 
     }
 
     public void CreateRoom()
     {
-       // string roomId;
         socket.Value.Emit("CreateRoom");
         SceneManager.LoadScene("Room");
-
- 
     }
+
     public void EnterRoom(string id)
     {
-       // string roomId;
         socket.Value.Emit("EnterRoom",id);
  
     }
@@ -95,9 +91,9 @@ public class NetworkManager : Singleton<NetworkManager>
         move.PlayerName = player.ToString();
         move.Dir = dir;
         move.Pos = pos;
-        string MoveToJson = JsonUtility.ToJson(move);
+        string MoveToJson = JsonUtility.ToJson(move);       //플레이어 이동 정보 Json 변환
         //Debug.Log(MoveToJson);
-        socket.Value.EmitJson("MovePlayer", MoveToJson);
+        socket.Value.EmitJson("MovePlayer", MoveToJson);            //이동 정보 서버에 전송
        // "{ \"my\": \"data\" }"
     }
 

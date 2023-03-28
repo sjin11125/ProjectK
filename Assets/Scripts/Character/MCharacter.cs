@@ -93,7 +93,6 @@ public class MCharacter : MonoBehaviour
         {
             GameObject AttackObj = AttakObjPool.Find(x => x.activeSelf == false);
 
-        
             if (AttackObj == null)                //오브젝트 풀에 활성화된게 없으면
             {
                 if (tag.Equals(PlayerName.Player1.ToString()))
@@ -107,8 +106,6 @@ public class MCharacter : MonoBehaviour
                     AttakObjPool.Add(AttackObj);            //위치 설정
 
                 }
-               
-
                 
             }
             AttackObj.SetActive(true);

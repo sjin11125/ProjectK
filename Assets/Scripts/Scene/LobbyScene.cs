@@ -23,6 +23,7 @@ public class LobbyScene : MonoBehaviour
 
 
         });
+
         //방들어가기 버튼 구독
         EnterRoomBtn.OnClickAsObservable().Subscribe(_=> {
 
@@ -30,11 +31,6 @@ public class LobbyScene : MonoBehaviour
             NetworkManager.Instance.EnterRoom(RoomIdInput.text);
 
         });
-        /*NetworkManager.Instance.roomId.Subscribe(id=> {
-
-            RoomIdText.text = id;
-        });*/
-
 
 
     }

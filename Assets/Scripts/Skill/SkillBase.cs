@@ -69,26 +69,22 @@ public class SkillBase : MonoBehaviour
 
     private void OnEnable()
     {
-      
-       
         switch (SkillName)
         {
-            case Skill.Top:
+            case Skill.Top:             //팽이 스킬
                 OnTriggerSubscribe((int)Damage);
                 StartCoroutine(TopCorountine());
                 break;
-            case Skill.Shield:
+            case Skill.Shield:              //방어막
                 OnTriggerStaySubscribe((int)Damage);
                 StartCoroutine(ShiledCoroutine());
                 break;
-            case Skill.Bomb:
-            //    OnTriggerSubscribe((int)Damage);
+            case Skill.Bomb:            //폭탄
                 break;
-            case Skill.Thunder:
-             //   OnTriggerSubscribe((int)Damage);
+            case Skill.Thunder:         //번개 발사기
                 StartCoroutine(ThunderCorountine());
                 break;
-            default:
+            default:                    //기본 공격
                 OnTriggerSubscribe((int)Damage);
                 StartCoroutine(BasicCorountine());
                 break;
@@ -125,8 +121,6 @@ public class SkillBase : MonoBehaviour
     }
     public void OnTriggerSubscribe(int damage)
     {
-
-
        triggerStream =   gameObject.OnTriggerEnterAsObservable().Subscribe(other => {
             switch (Owner)          //자기가 공격한 건 안맞음
             {
@@ -150,7 +144,6 @@ public class SkillBase : MonoBehaviour
                 default:
                     break;
             }
-            //skillManager.OtherDamaged(damage);      //다른 플레이어 HP 반영
         }).AddTo(gameObject);
 
     }
@@ -168,6 +161,7 @@ public class SkillBase : MonoBehaviour
             yield return null;
         }
     }
+
     IEnumerator TopCorountine()       //팽이 공격
     {
         int dir = 0;
@@ -197,7 +191,7 @@ public class SkillBase : MonoBehaviour
             yield return new WaitForSeconds(coolTime);
         }
     }
-    IEnumerator ShiledCoroutine()
+    IEnumerator ShiledCoroutine()       //방어막 
     {
         Vector3 ShiledScale = gameObject.transform.localScale;
         while (true)

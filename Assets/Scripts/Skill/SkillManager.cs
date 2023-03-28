@@ -100,11 +100,9 @@ public class SkillManager : MonoBehaviour
                 //Player.SkillUpdate(MySkills[item.skillInfo.EngName]);           //스킬 업데이트
 
             });
-  
-
         }
 
-        // SkillLevelUp();
+
         NetworkManager.Instance.socket.Value.On("SkillUpdate",(string skill)=> {            //다른 플레이어 스킬 업데이트
            
                 SkillInfos skillInfo = JsonUtility.FromJson<SkillInfos>(skill);
