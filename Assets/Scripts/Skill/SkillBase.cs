@@ -122,29 +122,32 @@ public class SkillBase : MonoBehaviour
     public void OnTriggerSubscribe(int damage)
     {
        triggerStream =   gameObject.OnTriggerEnterAsObservable().Subscribe(other => {
-            switch (Owner)          //자기가 공격한 건 안맞음
-            {
-                case PlayerName.Player1:
-                    if (other.tag.Equals(PlayerName.Player2.ToString()))
-                    {
-                        NetworkManager.Instance.Attack(damage);
-                        gameObject.SetActive(false);
-                   
-                    }
-                    break;
+           if (Owner == NetworkManager.Instance.player)
+           {
+               switch (Owner)          //자기가 공격한 건 안맞음
+               {
+                   case PlayerName.Player1:
+                       if (other.tag.Equals(PlayerName.Player2.ToString()))
+                       {
+                           NetworkManager.Instance.Attack(damage);
+                           
 
-                case PlayerName.Player2:
-                    if (other.tag.Equals(PlayerName.Player1.ToString()))
-                    {
-                        NetworkManager.Instance.Attack(damage);
-                        gameObject.SetActive(false);
-                     
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }).AddTo(gameObject);
+                       }
+                       break;
+
+                   case PlayerName.Player2:
+                       if (other.tag.Equals(PlayerName.Player1.ToString()))
+                       {
+                           NetworkManager.Instance.Attack(damage);
+
+                       }
+                       break;
+                   default:
+                       break;
+               }
+           }
+           gameObject.SetActive(false);
+       }).AddTo(gameObject);
 
     }
 

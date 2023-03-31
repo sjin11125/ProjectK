@@ -26,12 +26,12 @@ public class SkillManager : MonoBehaviour
     public KPlayer OtherPlayer;
 
     public Slider ExpSlider;
-    public Slider HpSlider;
-    public Slider OtherHpSlider;
+    public Slider RedHpSlider;
+    public Slider BlueHpSlider;
 
     public float Exp;
-    public int HP=100;
-    public int OtherHP=100;
+    public int RedHP = 100;
+    public int BlueHP = 100;
     // Start is called before the first frame update
     private void Start()
     {
@@ -134,23 +134,22 @@ public class SkillManager : MonoBehaviour
         NetworkManager.Instance.socket.Value.On("Attacked",(string attack)=> {            //공격받았다
 
             AttackInfo attackInfo = JsonUtility.FromJson<AttackInfo>(attack);
-
-            if (attackInfo.PlayerName!=NetworkManager.Instance.player.ToString())       //내 캐릭터가 공격받은거라면?
+            switch (attackInfo.PlayerName)
             {
-                HP -= int.Parse(attackInfo.Damage);
-                HpSlider.value = HP;
-            }
-            else     //내 캐릭터가 공격받은게 아니라면
-            {
-                OtherHP -= int.Parse(attackInfo.Damage);
-                OtherHpSlider.value = OtherHP;
+                case "Player1":
+                    RedHP -= int.Parse(attackInfo.Damage);
+                    RedHpSlider.value = RedHP;
                
+                    break;
+                case "Player2":
+                    BlueHP -= int.Parse(attackInfo.Damage);
+                    BlueHpSlider.value = BlueHP;
+                    break;
+                default:
+                    break;
             }
+     
         });
-    }
-    public void OtherDamaged(int damage)
-    {
-       
     }
     public void GetReward()
     {

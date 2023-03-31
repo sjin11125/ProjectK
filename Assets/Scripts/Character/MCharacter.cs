@@ -22,7 +22,7 @@ public class MCharacter : MonoBehaviour
     public bool isAuto;     //자동 이동인지
 
     List<GameObject> AttakObjPool=new List<GameObject> ();      //공격 오브젝트 풀
-
+    public PlayerName player;
  
     public virtual void Start()
     {
@@ -110,7 +110,7 @@ public class MCharacter : MonoBehaviour
             }
             AttackObj.SetActive(true);
             AttackObj.transform.eulerAngles = gameObject.transform.eulerAngles;     //공격 프리팹 각도 설정(캐릭터가 바라보는 쪽으로 )
-
+            AttackObj.GetComponent<SkillBase>().Owner = player;
             Observable.EveryUpdate().Where(_ => (AttackObj.transform.position - transform.position).magnitude >= 50).Subscribe(_ => {
                 AttackObj.SetActive(false);
 

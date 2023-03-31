@@ -105,8 +105,8 @@ public class NetworkManager : Singleton<NetworkManager>
     public void Attack(int damage)
     {
         AttackInfo attack;
-        attack.PlayerName = player.ToString();
-        attack.Damage = damage.ToString();
+        attack.PlayerName = player.ToString();      //공격한 캐릭터
+        attack.Damage = damage.ToString();  //데미지
 
         string AttackToJson = JsonUtility.ToJson(attack);
         socket.Value.EmitJson("Attack", AttackToJson);
