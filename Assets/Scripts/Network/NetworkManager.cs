@@ -101,6 +101,7 @@ public class NetworkManager : Singleton<NetworkManager>
     {
         socket.Value.Emit("GetItem", index.ToString());
     }
+
     public void Attack(int damage)
     {
         AttackInfo attack;

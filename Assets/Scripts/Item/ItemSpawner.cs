@@ -33,11 +33,11 @@ public class ItemSpawner : MonoBehaviour
 
         NetworkManager.Instance.socket.Value.On("GetItem", (string index) => {
 
-//Debug.Log("æ∆¿Ã≈€ »πµÊ");
             index = index.Replace('"',' ').Trim();
-            Debug.Log("æ∆¿Ã≈€ »πµÊ "+ index);
+
             int i = int.Parse(index);
             ItemList[i].SetActive(false);
+            //æ∆¿Ã≈€ ∫Ò»∞º∫»≠
         });
     }
     public void ItemObjSetting(int seed)

@@ -72,12 +72,9 @@ posInfo.RoomId=posInfo.RoomId.replaceAll("\"", "");     //큰따옴표 제거
 });
 
 socket.on('GetItem',(index)=>{           //아이템 획득하기
-    console.log('아이템 획득');
-
-    //index=index.replaceAll("\"", "");
-    console.log('아이템 인덱스: '+JSON.stringify(index));
  
    socket.to(socket.Roomid).emit('GetItem',index);    
+   //다른 플레이어에게 획득한 아이템의 인덱스 전송
 });
 
 socket.on('Attack',(damage)=>{           //공격
@@ -99,6 +96,7 @@ socket.on('SendMessage',(message)=>{           //채팅 보내기
     const chatInfo=JSON.parse(JSON.stringify( message));
  
     io.to(socket.Roomid).emit('RecieveMessage',chatInfo);    
+    //룸에 있는 모든 유저에게 메세지 보냄
 });
 
 

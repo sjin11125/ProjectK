@@ -33,12 +33,13 @@ public class RoomScene : MonoBehaviour
 
         NetworkManager.Instance.socket.Value.On("RecieveMessage",(string message)=> {
 
-            ChatInfo chatInfo = JsonUtility.FromJson<ChatInfo>(message);
+            ChatInfo chatInfo = JsonUtility.FromJson<ChatInfo>(message);        //Json->ChatInfo 
 
-            GameObject ChatObj = Instantiate(ChatPrefab, ChatConent.transform) as GameObject;
+            GameObject ChatObj = Instantiate(ChatPrefab, ChatConent.transform) as GameObject;   //채팅 프리팹 생성
 
             ChatPrefabScript chat = ChatObj.GetComponent<ChatPrefabScript>();
-            chat.SettingChat(chatInfo.PlayerName, chatInfo.Message);
+            chat.SettingChat(chatInfo.PlayerName, chatInfo.Message);        //닉넴 메세지 설정
+                
 
             ContentRect.anchoredPosition = new Vector2(ContentRect.anchoredPosition.x, ContentRect.anchoredPosition.y+112);
 
@@ -54,12 +55,14 @@ public class RoomScene : MonoBehaviour
             isReady = true;
             ReadyBtn.interactable = false;
         });
+
         ChatSendBtn.OnClickAsObservable().Subscribe(_ => {           //채팅 Send 눌럿을때
 
 
             NetworkManager.Instance.SendMessage(NetworkManager.Instance.player.ToString(), ChatMessage.text);
 
         });
+
         ReadyBtn.OnClickAsObservable().Subscribe(_=> {
 
             if (NetworkManager.Instance.player== PlayerName.Player2)
