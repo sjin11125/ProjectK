@@ -52,8 +52,8 @@ public class NetworkManager : Singleton<NetworkManager>
             
 
             if (player == PlayerName.None)
-             player = PlayerName.Player2;
-            SceneManager.LoadScene("Room");
+             player = PlayerName.Player2;   //자신을 Player2로 설정
+            SceneManager.LoadScene("Room"); //씬이동
 
 
         });
