@@ -13,8 +13,8 @@ public enum State
 }
 public enum PlayerName
 {
-    Player1,
-    Player2,
+    Player1,        //blue
+    Player2,            //red
     None
 }
 public enum Skill

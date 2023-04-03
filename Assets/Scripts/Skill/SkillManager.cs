@@ -148,6 +148,19 @@ public class SkillManager : MonoBehaviour
                 default:
                     break;
             }
+
+            if (RedHP<=0||BlueHP<=0)        //hp가 0이 되면 게임 끝
+            {
+                if (RedHP<=0)
+                {
+                    NetworkManager.Instance.GameEnd("Player1");         //이긴 사람 이름 전송
+                }
+                if (BlueHP<=0)
+                {
+                    NetworkManager.Instance.GameEnd("Player2");
+
+                }
+            }
      
         });
     }

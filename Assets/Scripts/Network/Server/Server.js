@@ -112,6 +112,17 @@ socket.on('GameStart',()=>{           //게임 시작
     var seed=randSeed();            //랜덤 시드 정하기
     io.to(socket.Roomid).emit('GameStart',seed);    
  });
+
+ socket.on('GameEnd',(name)=>{           //게임 끝
+    console.log('게임 끝');
+
+    io.to(socket.Roomid).emit('GameEnd',name);    
+ });
+
+
+
+
+
 });
 
 function randSeed()

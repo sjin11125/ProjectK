@@ -139,4 +139,10 @@ public class NetworkManager : Singleton<NetworkManager>
     {
         socket.Value.Emit("GameStart");
     }
+
+    public void GameEnd(string name)
+    {
+        socket.Value.Emit("GameEnd", name);
+
+    }
 }
