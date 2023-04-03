@@ -145,4 +145,9 @@ public class NetworkManager : Singleton<NetworkManager>
         socket.Value.Emit("GameEnd", name);
 
     }
+    public void LeaveRoom()
+    {
+        socket.Value.Emit("LeaveRoom", roomId.Value);
+
+    }
 }
