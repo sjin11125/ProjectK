@@ -80,8 +80,8 @@ socket.on('GetItem',(index)=>{           //아이템 획득하기
 socket.on('Attack',(damage)=>{           //공격
     console.log('공격당함');
 
- 
-   io.to(socket.Roomid).emit('Attacked',damage);    
+   io.to(socket.Roomid).emit('Attacked',damage);   
+   //룸에 있는 모든 플레이어에게 공격 정보 보냄
 });
 
 socket.on('SkillUpdate',(skill)=>{           //스킬 업데이트

@@ -13,9 +13,9 @@ public class SkillManager : MonoBehaviour
     [SerializeField]
     List<SkillInfoUI> ChoiceSkills = new List<SkillInfoUI>();
 
-    public Dictionary<string, SkillInfo> AllSkills = new Dictionary<string, SkillInfo>();        //¸ðµç ±â¼ú Á¤º¸
-    public Dictionary<string, SkillBase> MySkills = new Dictionary<string, SkillBase>();            //ÇöÀç ÇÃ·¹ÀÌ¾î°¡ °¡Áö°í ÀÖ´Â ½ºÅ³µé
-    public Dictionary<string, SkillBase> OtherSkills = new Dictionary<string, SkillBase>();            //´Ù¸¥ ÇÃ·¹ÀÌ¾î°¡ °¡Áö°í ÀÖ´Â ½ºÅ³µé
+    public Dictionary<string, SkillInfo> AllSkills = new Dictionary<string, SkillInfo>();        //ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    public Dictionary<string, SkillBase> MySkills = new Dictionary<string, SkillBase>();            //ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½Å³ï¿½ï¿½
+    public Dictionary<string, SkillBase> OtherSkills = new Dictionary<string, SkillBase>();            //ï¿½Ù¸ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½Å³ï¿½ï¿½
 
     [SerializeField]
     List<GameObject> SkillPrefab;
@@ -41,14 +41,14 @@ public class SkillManager : MonoBehaviour
         
 
 
-        TextAsset csvData = Resources.Load<TextAsset>("SkillList");      //½ºÅ³ Á¤º¸ ¿¢¼¿ ÆÄÀÏ ÆÄ½Ì
+        TextAsset csvData = Resources.Load<TextAsset>("SkillList");      //ï¿½ï¿½Å³ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ä½ï¿½
 
-        string[] data = csvData.text.Split(new char[] { '\n' });    //¿£ÅÍ ±âÁØÀ¸·Î ÂÉ°·
+        string[] data = csvData.text.Split(new char[] { '\n' });    //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½É°ï¿½
         for (int i = 1; i < data.Length; i++)
         {
             if (data[i] == "")
                 break;
-            string[] skill = data[i].Split(',');            //ÄÞ¸¶ ±âÁØÀ¸·Î ÂÉ°·
+            string[] skill = data[i].Split(',');            //ï¿½Þ¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½É°ï¿½
        
             int[] speed = Array.ConvertAll((skill[2].Split('*')), int.Parse);
             int[] damage= Array.ConvertAll((skill[3].Split('*')), int.Parse);
@@ -58,26 +58,26 @@ public class SkillManager : MonoBehaviour
 
 
             SkillInfo skillInfo = new SkillInfo(skill[0], skill[1], speed,damage,radius,cooltime,count, skill[7]);
-            AllSkills.Add(skill[7], skillInfo);         //¸ðµç ±â¼ú µñ¼Å³Ê¸®¿¡ Ãß°¡
+            AllSkills.Add(skill[7], skillInfo);         //ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½Å³Ê¸ï¿½ï¿½ï¿½ ï¿½ß°ï¿½
         }
 
         foreach (var item in ChoiceSkills)
         {
-            item.Btn.onClick.AddListener(()=> {         //¹öÆ° Å¬¸¯ ÀÌº¥Æ® Ãß°¡
-                if (MySkills.ContainsKey(item.skillInfo.EngName))          //ÇØ´ç ½ºÅ³ÀÌ ÀÖÀ¸¸é
+            item.Btn.onClick.AddListener(()=> {         //ï¿½ï¿½Æ° Å¬ï¿½ï¿½ ï¿½Ìºï¿½Æ® ï¿½ß°ï¿½
+                if (MySkills.ContainsKey(item.skillInfo.EngName))          //ï¿½Ø´ï¿½ ï¿½ï¿½Å³ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                 {
                     if (MySkills[item.skillInfo.EngName].level != 2)
                     {
-                        MySkills[item.skillInfo.EngName].level += 1; //·¹º§ Ãß°¡
-                        MySkills[item.skillInfo.EngName].Speed = AllSkills[item.skillInfo.EngName].Speed[MySkills[item.skillInfo.EngName].level]; //½ºÇÇµå ¾÷µ¥ÀÌÆ®
-                        MySkills[item.skillInfo.EngName].Damage = AllSkills[item.skillInfo.EngName].Damage[MySkills[item.skillInfo.EngName].level]; //µ¥¹ÌÁö ¾÷µ¥ÀÌÆ®
-                        MySkills[item.skillInfo.EngName].Radius = AllSkills[item.skillInfo.EngName].Radius[MySkills[item.skillInfo.EngName].level]; //¹üÀ§ ¾÷µ¥ÀÌÆ®
-                        MySkills[item.skillInfo.EngName].coolTime = AllSkills[item.skillInfo.EngName].CoolTime[MySkills[item.skillInfo.EngName].level]; //ÄðÅ¸ÀÓ ¾÷µ¥ÀÌÆ®
-                        MySkills[item.skillInfo.EngName].count = AllSkills[item.skillInfo.EngName].Count[MySkills[item.skillInfo.EngName].level]; //°³¼ö ¾÷µ¥ÀÌÆ®
+                        MySkills[item.skillInfo.EngName].level += 1; //ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½
+                        MySkills[item.skillInfo.EngName].Speed = AllSkills[item.skillInfo.EngName].Speed[MySkills[item.skillInfo.EngName].level]; //ï¿½ï¿½ï¿½Çµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
+                        MySkills[item.skillInfo.EngName].Damage = AllSkills[item.skillInfo.EngName].Damage[MySkills[item.skillInfo.EngName].level]; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
+                        MySkills[item.skillInfo.EngName].Radius = AllSkills[item.skillInfo.EngName].Radius[MySkills[item.skillInfo.EngName].level]; //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
+                        MySkills[item.skillInfo.EngName].coolTime = AllSkills[item.skillInfo.EngName].CoolTime[MySkills[item.skillInfo.EngName].level]; //ï¿½ï¿½Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
+                        MySkills[item.skillInfo.EngName].count = AllSkills[item.skillInfo.EngName].Count[MySkills[item.skillInfo.EngName].level]; //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
                    
                     }
                 }
-                else                //ÇØ´ç ½ºÅ³ÀÌ ¾øÀ¸¸é
+                else                //ï¿½Ø´ï¿½ ï¿½ï¿½Å³ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                 {
                     GameObject skill = SkillPrefab.Find(x => x.GetComponent<SkillBase>().SkillName.ToString() == item.skillInfo.EngName);
 
@@ -86,52 +86,52 @@ public class SkillManager : MonoBehaviour
 
                     SkillBase skillObjSkillBase=skillPrefab.GetComponent<SkillBase>();
 
-                    skillObjSkillBase.SetSkillInfo( item.skillInfo);            //½ºÅ³ Á¤º¸ ¼¼ÆÃ
+                    skillObjSkillBase.SetSkillInfo( item.skillInfo);            //ï¿½ï¿½Å³ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                     //skillObjSkillBase.skillManager = this;
 
-                    MySkills.Add(item.skillInfo.EngName, skillObjSkillBase);         //»õ·Î¿î ½ºÅ³ Ãß°¡
+                    MySkills.Add(item.skillInfo.EngName, skillObjSkillBase);         //ï¿½ï¿½ï¿½Î¿ï¿½ ï¿½ï¿½Å³ ï¿½ß°ï¿½
 
                 }
 
                 NetworkManager.Instance.SkillUpdate(MySkills[item.skillInfo.EngName].SkillName.ToString(), MySkills[item.skillInfo.EngName].level.ToString());
-                //¼­¹ö¿¡ ½ºÅ³ Á¤º¸ Àü´Þ
+                //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å³ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-                SkillLevelUpPopUp.SetActive(false);     //ÆË¾÷Ã¢ ²ô±â
-                //Player.SkillUpdate(MySkills[item.skillInfo.EngName]);           //½ºÅ³ ¾÷µ¥ÀÌÆ®
+                SkillLevelUpPopUp.SetActive(false);     //ï¿½Ë¾ï¿½Ã¢ ï¿½ï¿½ï¿½ï¿½
+                //Player.SkillUpdate(MySkills[item.skillInfo.EngName]);           //ï¿½ï¿½Å³ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
 
             });
         }
 
 
-        NetworkManager.Instance.socket.Value.On("SkillUpdate",(string skill)=> {            //´Ù¸¥ ÇÃ·¹ÀÌ¾î ½ºÅ³ ¾÷µ¥ÀÌÆ®
+        NetworkManager.Instance.socket.Value.On("SkillUpdate",(string skill)=> {            //ï¿½Ù¸ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½Å³ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
            
                 SkillInfos skillInfo = JsonUtility.FromJson<SkillInfos>(skill);
 
-            if (OtherSkills.ContainsKey(skillInfo.SkillName))          //ÇØ´ç ½ºÅ³ÀÌ ÀÖÀ¸¸é
+            if (OtherSkills.ContainsKey(skillInfo.SkillName))          //ï¿½Ø´ï¿½ ï¿½ï¿½Å³ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             {
-                OtherSkills[skillInfo.SkillName].level += 1; //·¹º§ Ãß°¡
-                OtherSkills[skillInfo.SkillName].Speed = AllSkills[skillInfo.SkillName].Speed[OtherSkills[skillInfo.SkillName].level]; //½ºÇÇµå ¾÷µ¥ÀÌÆ®
-                OtherSkills[skillInfo.SkillName].Damage = AllSkills[skillInfo.SkillName].Damage[OtherSkills[skillInfo.SkillName].level]; //µ¥¹ÌÁö ¾÷µ¥ÀÌÆ®
-                OtherSkills[skillInfo.SkillName].Radius = AllSkills[skillInfo.SkillName].Radius[OtherSkills[skillInfo.SkillName].level]; //¹üÀ§ ¾÷µ¥ÀÌÆ®
-                OtherSkills[skillInfo.SkillName].coolTime = AllSkills[skillInfo.SkillName].CoolTime[OtherSkills[skillInfo.SkillName].level]; //ÄðÅ¸ÀÓ ¾÷µ¥ÀÌÆ®
-                OtherSkills[skillInfo.SkillName].count = AllSkills[skillInfo.SkillName].Count[OtherSkills[skillInfo.SkillName].level]; //°³¼ö ¾÷µ¥ÀÌÆ®
+                OtherSkills[skillInfo.SkillName].level += 1; //ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½
+                OtherSkills[skillInfo.SkillName].Speed = AllSkills[skillInfo.SkillName].Speed[OtherSkills[skillInfo.SkillName].level]; //ï¿½ï¿½ï¿½Çµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
+                OtherSkills[skillInfo.SkillName].Damage = AllSkills[skillInfo.SkillName].Damage[OtherSkills[skillInfo.SkillName].level]; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
+                OtherSkills[skillInfo.SkillName].Radius = AllSkills[skillInfo.SkillName].Radius[OtherSkills[skillInfo.SkillName].level]; //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
+                OtherSkills[skillInfo.SkillName].coolTime = AllSkills[skillInfo.SkillName].CoolTime[OtherSkills[skillInfo.SkillName].level]; //ï¿½ï¿½Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
+                OtherSkills[skillInfo.SkillName].count = AllSkills[skillInfo.SkillName].Count[OtherSkills[skillInfo.SkillName].level]; //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
             }
-            else                                                            //ÇØ´ç ½ºÅ³ÀÌ ¾øÀ¸¸é
+            else                                                            //ï¿½Ø´ï¿½ ï¿½ï¿½Å³ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             {
                 GameObject skillObj = SkillPrefab.Find(x => x.GetComponent<SkillBase>().SkillName.ToString() == skillInfo.SkillName);
 
                 GameObject skillPrefab = Instantiate(skillObj, OtherPlayer.Skillpos.transform) as GameObject;
                 SkillBase skillObjSkillBase = skillPrefab.GetComponent<SkillBase>();
 
-                skillObjSkillBase.SetSkillInfo(AllSkills[skillInfo.SkillName], int.Parse(skillInfo.level));            //½ºÅ³ Á¤º¸ ¼¼ÆÃ
+                skillObjSkillBase.SetSkillInfo(AllSkills[skillInfo.SkillName], int.Parse(skillInfo.level));            //ï¿½ï¿½Å³ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-                OtherSkills.Add(skillInfo.SkillName, skillObjSkillBase);            //µñ¼Å³Ê¸® Ãß°¡
+                OtherSkills.Add(skillInfo.SkillName, skillObjSkillBase);            //ï¿½ï¿½Å³Ê¸ï¿½ ï¿½ß°ï¿½
             }
            
         });
 
 
-        NetworkManager.Instance.socket.Value.On("Attacked",(string attack)=> {            //°ø°Ý¹Þ¾Ò´Ù
+        NetworkManager.Instance.socket.Value.On("Attacked",(string attack)=> {            //ï¿½ï¿½ï¿½Ý¹Þ¾Ò´ï¿½
 
             AttackInfo attackInfo = JsonUtility.FromJson<AttackInfo>(attack);
             switch (attackInfo.PlayerName)
@@ -149,11 +149,12 @@ public class SkillManager : MonoBehaviour
                     break;
             }
 
-            if (RedHP<=0||BlueHP<=0)        //hp°¡ 0ÀÌ µÇ¸é °ÔÀÓ ³¡
+
+            if (RedHP<=0||BlueHP<=0)        //hpï¿½ï¿½ 0ï¿½ï¿½ ï¿½Ç¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
             {
                 if (RedHP<=0)
                 {
-                    NetworkManager.Instance.GameEnd("Player1");         //ÀÌ±ä »ç¶÷ ÀÌ¸§ Àü¼Û
+                    NetworkManager.Instance.GameEnd("Player1");         //ï¿½Ì±ï¿½ ï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½
                 }
                 if (BlueHP<=0)
                 {
@@ -161,6 +162,7 @@ public class SkillManager : MonoBehaviour
 
                 }
             }
+
      
         });
     }
@@ -180,17 +182,17 @@ public class SkillManager : MonoBehaviour
         for (int i = 0; i < 3; i++)
         {
             string randNum;
-            //½ºÅ³ ·£´ý °í¸§
+            //ï¿½ï¿½Å³ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             do
             {
                 int randSkill = Enum.GetNames(typeof(Skill)).Length;
                 randNum = ((Skill)UnityEngine.Random.Range(1, randSkill)).ToString();
 
-            } while (ChoiceSkills.Any(x => x.skillInfo.Name == AllSkills[randNum].Name));       //Áßº¹ ¾ÈµÇ°Ô
+            } while (ChoiceSkills.Any(x => x.skillInfo.Name == AllSkills[randNum].Name));       //ï¿½ßºï¿½ ï¿½ÈµÇ°ï¿½
 
             ChoiceSkills[i].skillInfo = AllSkills[randNum];
 
-            //½ºÅ³ Á¤º¸ ³Ö±â
+            //ï¿½ï¿½Å³ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö±ï¿½
             ChoiceSkills[i].skillNameText.text = AllSkills[randNum].Name;
             ChoiceSkills[i].skillInfoText.text = AllSkills[randNum].Info;
 
