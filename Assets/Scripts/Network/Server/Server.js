@@ -117,6 +117,7 @@ socket.on('GameStart',()=>{           //게임 시작
     console.log('게임 끝');
 
     io.to(socket.Roomid).emit('GameEnd',name);    
+    
  });
 
 

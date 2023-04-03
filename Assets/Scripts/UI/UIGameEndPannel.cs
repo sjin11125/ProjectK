@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using socket.io;
 using UniRx;
 using UnityEngine.SceneManagement;
+using System;
 
 public class UIGameEndPannel : MonoBehaviour
 {
@@ -31,14 +33,18 @@ public class UIGameEndPannel : MonoBehaviour
             {
                 PlayerRed.SetActive(true);
             }
+            Observable.Timer(TimeSpan.FromSeconds(5), Scheduler.MainThreadIgnoreTimeScale).Subscribe(_ =>
+            {
+                Time.timeScale = 1;     //ÀÏ½ÃÁ¤Áö ²û
+                SceneManager.LoadScene("Lobby");
+
+            }).AddTo(this);
         });
 
-        GoMainBtn.OnClickAsObservable().Subscribe(_ => {
-            Time.timeScale = 1;     //ÀÏ½ÃÁ¤Áö ²û
+        /*GoMainBtn.OnClickAsObservable().Subscribe(_ => {
+    
 
-            SceneManager.LoadScene("Main");
-
-        });
+        });*/
     }
 
 }
