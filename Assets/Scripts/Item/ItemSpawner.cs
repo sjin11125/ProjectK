@@ -21,6 +21,8 @@ public class ItemSpawner : MonoBehaviour
     List<GameObject> ItemList = new List<GameObject>();
 
     public SkillManager skillManager;
+
+    IObservable<long> TimerStream;
     void Start()
     {   //시드값으로 랜덤생성
 
@@ -29,7 +31,11 @@ public class ItemSpawner : MonoBehaviour
             ItemObjSetting(seed);
 
         });*/
-        ItemObjSetting(NetworkManager.Instance.RandomSeed.Value);
+        Observable.Interval(System.TimeSpan.FromSeconds(10f)).Subscribe(_ => {
+
+            ItemObjSetting(NetworkManager.Instance.RandomSeed.Value);
+        });
+
 
         NetworkManager.Instance.socket.Value.On("GetItem", (string index) => {
 
@@ -71,5 +77,6 @@ public class ItemSpawner : MonoBehaviour
            
         
     }
+
 
 }
