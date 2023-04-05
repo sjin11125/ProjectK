@@ -127,6 +127,14 @@ socket.on('GameStart',()=>{           //게임 시작
     socket.Roomid='';
     });
 
+socket.on('ItemRespawn',()=>{           //아이템 리스폰
+    console.log('아이템 리스폰');
+    var seed=randSeed();            //랜덤 시드 정하기
+   io.to(socket.Roomid).emit('ItemRespawn',seed);    
+});
+
+
+
 });
 
 

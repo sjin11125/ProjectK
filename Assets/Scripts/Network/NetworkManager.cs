@@ -150,4 +150,9 @@ public class NetworkManager : Singleton<NetworkManager>
         socket.Value.Emit("LeaveRoom", roomId.Value);
 
     }
+    public void ItemRespawn()
+    {
+        socket.Value.Emit("ItemRespawn", roomId.Value);
+
+    }
 }
